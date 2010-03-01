@@ -1,0 +1,8 @@
+{
+  "name": "chromeRadio",
+  "version": "1.0",
+  "description": "Plays Mp3 Files from a Page",
+  "browser_action": {
+    "popup": "popup.html"
+  }
+}
