@@ -1,0 +1,38 @@
+<script>
+
+	var links = null;
+
+	chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
+
+		updateLinks(tabId);
+
+	});
+	
+	function updateLinks(tabId)
+	{
+		chrome.tabs.sendRequest(tabId,{update:"true"});
+	}
+	
+	// LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
+
+	chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {
+		
+		//alert(links);
+		if (request == null)
+		{
+			chrome.browserAction.setBadgeText({text:"0"});
+			//chrome.extension.getURL("popup.html").updateList();		
+			chrome.extension.getURL("popup.html").updateList();	
+		}
+		else
+		{
+			links = request;
+			chrome.browserAction.setBadgeText({text:links.length.toString()});
+			chrome.extension.getURL("popup.html").updateList();		
+		}
+
+		//document.getElementById("links_found").innerHTML = request:numlinks;
+		sendResponse({}); 
+	});
+</script>

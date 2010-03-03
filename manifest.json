@@ -2,7 +2,18 @@
   "name": "chromeRadio",
   "version": "1.0",
   "description": "Plays Mp3 Files from a Page",
+  "background_page" : "background.html",
+    "permissions": [
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*"],
+      "js": ["match_content_script.js"]
+    }
+  ],
   "browser_action": {
+    "default_icon": "icon.png",
     "popup": "popup.html"
   }
 }

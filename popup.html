@@ -1,8 +1,40 @@
+<html>
 <head>
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title></title>
-  <body id="ID " onload="">
-<audio src="http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8" controls="controls"></audio>
-<!-- testlukas    <embed src="http://somafm.com/groovesalad130.pls"> </embed>>-->
-  </body>
+<script>
+
+	function updateList()
+	{
+		var target = document.getElementById("links_found");
+		var bgLinks = chrome.extension.getBackgroundPage().links;
+		
+		var currentPageLinks = bgLinks.length;
+		//alert(currentPageLinks);
+		
+		var insert = "";
+		for(i = 0; i < bgLinks.length; i++)
+		{
+			insert+="<a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><br>";
+		}
+		
+		target.innerHTML = insert;
+	}
+	
+	function play(href)
+	{
+		var playertarget = document.getElementById("player_area");
+		playertarget.innerHTML = genPlayerLink(href);
+	}
+	
+	function genPlayerLink(href)
+	{
+		return "<audio autoplay controls src=\""+href+"\"></audio>";
+	}
+
+</script>
 </head>
+<body onLoad="updateList()" style="width:300px;";>
+    <p>MP3-Links found:</p>
+	<p id="player_area"></p>
+    <p id="links_found"></p>
+  </body>
+</html>
