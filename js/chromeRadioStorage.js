@@ -46,10 +46,17 @@ function getRadioItems() {
        if (key.substring(0, 8) == chromeRadioStoragePrefix) {
          storage_key = key.substring(8);
          res[storage_key] = localStorage.getItem( key ); // retrieve the value using the getItem method
-         output_string += "<li>" + res[storage_key] + ": " + storage_key + "</li>";
+         output_string += "<li><a onclick=\"playme(this.href);return false;\" href=\"" + storage_key + "\"> " + res[storage_key] + "</a></li>";
        }
    }
 
   var my_library = document.getElementById("my_library");
   my_library.innerHTML = output_string;
+}
+
+function playme(url) {
+  var my_radio_player = document.getElementById("my-radio-player");
+  my_radio_player.setAttribute('src', url);
+  my_radio_player.currentTime=0;
+  my_radio_player.play();
 }
