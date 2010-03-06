@@ -10,28 +10,27 @@
 
 	});
 	
-	// This listener handles "Add this Mp3 to local storage" requests
-	// sent from popup.html
-	chrome.extension.onRequest.addListener(
-	function(request, sender, sendResponse) {
-    if (request.addmp3)
+	
+	// simply add new mp3 without a message
+	// this is called in popup.html
+	function addToLibrary(href,text)
 	{
-		// Save the new link to storage.
-		console.log("Adding to local storage: addmp3: "+request.addmp3+", linktext: "+request.linktext);
-		setItem(chromeRadioStoragePrefix+request.addmp3, request.linktext);
+		setItem(chromeRadioStoragePrefix+href, text);
 	}
-	else if (request.checkmp3)
+	
+	// check for popup.html if given mp3 already is in local storage.
+	function mp3IsInLibrary(href)
 	{
-		if (getItem(request.checkmp3) == null)
+		console.log("checking: "+href);
+		if(getItem(chromeRadioStoragePrefix+href) != null)
 		{
-			sendResponse({checkmp3res:"false"});
+			return true;
 		}
 		else
 		{
-			sendResponse({checkmp3res:"true"});
+			return false;
 		}
 	}
-	});
 	
 	function setItem(key, value) {
 	  try {
@@ -47,7 +46,8 @@
 	  try {
 		value = window.localStorage.getItem(key);
 	  }catch(e) {
-		value = null;
+		//value = "null";
+		return null;
 	  }
 	  return value;
 	}

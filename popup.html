@@ -2,39 +2,51 @@
 <head>
 <script>
 
-	// send message to my-library.html to add the given link to local storage.
+	var insert = "";
+	
+	// call background.html to add a new link to library
 	function addFileToLibrary(ref)
 	{
 		var mp3div = ref.parentNode;
 		var link = mp3div.childNodes[0];
-		chrome.extension.sendRequest({addmp3:link.href, linktext:link.innerHTML});
+		var button = mp3div.childNodes[1];
+		chrome.extension.getBackgroundPage().addToLibrary(link.href,link.innerHTML);
+		mp3div.removeChild(button);
 	}
-
+	
+	// link-node with add-button
+	function addMP3LinkNode(href,text)
+	{
+		insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+href+"\">"+text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";	
+	}
+	
+	// link-node without add-button
+	function addMP3LinkNodeNoButton(href,text)
+	{
+		insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+href+"\">"+text+"</a></div>";	
+	}
+	
 	function updateList()
 	{
 		var target = document.getElementById("links_found");
 		var bgLinks = chrome.extension.getBackgroundPage().links;
 		
 		var currentPageLinks = bgLinks.length;
-		//alert(currentPageLinks);
 		
-		var insert = "";
+		insert = "";
+		
 		for(i = 0; i < bgLinks.length; i++)
 		{
-		/*
-			chrome.extension.sendRequest({checkmp3:bgLinks[i].href}, function(response)
+			// check if that mp3 is already in library and decide whether to show add-button
+			
+			if (chrome.extension.getBackgroundPage().mp3IsInLibrary(bgLinks[i].href) == true)
 			{
-				if (response.checkmp3res == "true")
-				{
-				insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a></div>";
-				}
-				else
-				{
-				insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
-				}
-			});
-		*/
-						insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
+				addMP3LinkNodeNoButton(bgLinks[i].href, bgLinks[i].text);
+			}
+			else
+			{
+				addMP3LinkNode(bgLinks[i].href, bgLinks[i].text);
+			}	
 		}
 		
 		target.innerHTML = insert;
