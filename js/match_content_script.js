@@ -30,6 +30,11 @@
 				text = nodes[i].innerText;
 				href = nodes[i].href;
 				
+				if (!text)
+				{
+					text = href.substring(href.lastIndexOf('/')+1);
+				}
+				
 				if (text.length <= 0)
 				{			
 					// IF TEXT IS EMPTY (e.g. IMG-LINK), SHOW FILENAME FOR TEXT
