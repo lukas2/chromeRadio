@@ -9,10 +9,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js": ["js/match_content_script.js"],
-      "js": ["js/jquery-ui-1.8.rc3.custom.min.js"],
-      "js": ["js/jquery-1.4.2.min.js"],
-      "js": ["js/chromeRadioStorage.js"]
+      "js": ["js/match_content_script.js"]
     }
   ],
   "browser_action": {
