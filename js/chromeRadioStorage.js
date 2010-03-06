@@ -46,7 +46,7 @@ function getRadioItems() {
        if (key.substring(0, 8) == chromeRadioStoragePrefix) {
          storage_key = key.substring(8);
          res[storage_key] = localStorage.getItem( key ); // retrieve the value using the getItem method
-         output_string += "<li><a onclick=\"playme(this.href);return false;\" href=\"" + storage_key + "\"> " + res[storage_key] + "</a></li>";
+         output_string += "<li><a onclick=\"playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + res[storage_key] + "</a></li>";
        }
    }
 
