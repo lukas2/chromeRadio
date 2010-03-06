@@ -1,5 +1,46 @@
 <html>
 <head>
+<style type="text/css">
+
+body
+{
+	font-family: sans-serif;
+	font-size: 13px;
+	line-height: 15px;
+	background: #EEE;
+}
+
+table tr td img
+{
+	vertical-align: middle;
+	padding-top: 1px;
+	padding-left: 3px;
+}
+
+a:link, a:hover, a:visited
+{
+	text-decoration: none;
+	color: #000;
+}
+
+.mp3linknode td a
+{
+	margin-left: 5px;
+}
+
+h1
+{
+	font-size: 13px;
+}
+
+table tr td
+{
+	margin:0;
+	padding: 0;
+	font-size: 13px;
+	vertical-align: middle;
+}
+</style>
 <script>
 
 	var insert = "";
@@ -7,28 +48,31 @@
 	// call background.html to add a new link to library
 	function addFileToLibrary(ref)
 	{
-		var mp3div = ref.parentNode;
-		var link = mp3div.childNodes[0];
-		var button = mp3div.childNodes[1];
+		var mp3div = ref.parentNode.parentNode.parentNode;
+		var link = mp3div.childNodes[0].childNodes[0];
 		chrome.extension.getBackgroundPage().addToLibrary(link.href,link.innerHTML);
-		mp3div.removeChild(button);
+		updateList();
 	}
 	
 	// link-node with add-button
 	function addMP3LinkNode(href,text)
 	{
-		insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+href+"\">"+text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";	
+		insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td>"+
+		"<td><a href=\"#\"><img src=\"/images/addtolibrary.jpg\" onmouseover=\"this.src='/images/addtolibrary_lit.jpg';\" onmouseout=\"this.src='/images/addtolibrary.jpg';\" onClick=\"addFileToLibrary(this);\"></a></td></tr>";	
 	}
 	
 	// link-node without add-button
 	function addMP3LinkNodeNoButton(href,text)
 	{
-		insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+href+"\">"+text+"</a></div>";	
+		insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td></tr>";	
 	}
 	
 	function updateList()
 	{
 		var target = document.getElementById("links_found");
+		
+		target.innerHTML = "";
+		
 		var bgLinks = chrome.extension.getBackgroundPage().links;
 		
 		var currentPageLinks = bgLinks.length;
@@ -41,6 +85,7 @@
 			
 			if (chrome.extension.getBackgroundPage().mp3IsInLibrary(bgLinks[i].href) == true)
 			{
+
 				addMP3LinkNodeNoButton(bgLinks[i].href, bgLinks[i].text);
 			}
 			else
@@ -67,10 +112,9 @@
 </script>
 </head>
 <body onLoad="updateList()" style="width:300px;";>
-    <p>MP3-Links found:</p>
-	<p id="player_area"></p>
-    <p id="links_found"></p>
-<h2>My Library</h2>
-<p><a href="my-library.html" target="_blank">View My Library</a></p>
+	<a style="float:right;" href="my-library.html" target="_blank"><img src="images/showlibrary.jpg" onmouseover="this.src='images/showlibrary_lit.jpg';" onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button"></a>
+    <h1>MP3-Links found:</h1>
+    <p><table id="links_found"></table></p>
+<p></p>
   </body>
 </html>
