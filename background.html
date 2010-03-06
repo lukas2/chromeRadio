@@ -1,12 +1,56 @@
 <script>
 
 	var links = null;
+	chromeRadioStoragePrefix = "mp3_url:";
 
+	// this listener gets content_script results when user changed active tab
 	chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
 
 		updateLinks(tabId);
 
 	});
+	
+	// This listener handles "Add this Mp3 to local storage" requests
+	// sent from popup.html
+	chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {
+    if (request.addmp3)
+	{
+		// Save the new link to storage.
+		console.log("Adding to local storage: addmp3: "+request.addmp3+", linktext: "+request.linktext);
+		setItem(chromeRadioStoragePrefix+request.addmp3, request.linktext);
+	}
+	else if (request.checkmp3)
+	{
+		if (getItem(request.checkmp3) == null)
+		{
+			sendResponse({checkmp3res:"false"});
+		}
+		else
+		{
+			sendResponse({checkmp3res:"true"});
+		}
+	}
+	});
+	
+	function setItem(key, value) {
+	  try {
+		window.localStorage.removeItem(key);
+		window.localStorage.setItem(key, value);
+	  }catch(e) {
+	  }
+	}
+
+	//Gets the item from local storage with the specified key
+	function getItem(key) {
+	  var value;
+	  try {
+		value = window.localStorage.getItem(key);
+	  }catch(e) {
+		value = null;
+	  }
+	  return value;
+	}
 	
 	function updateLinks(tabId)
 	{

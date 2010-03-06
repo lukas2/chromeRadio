@@ -21,7 +21,20 @@
 		var insert = "";
 		for(i = 0; i < bgLinks.length; i++)
 		{
-			insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
+		/*
+			chrome.extension.sendRequest({checkmp3:bgLinks[i].href}, function(response)
+			{
+				if (response.checkmp3res == "true")
+				{
+				insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a></div>";
+				}
+				else
+				{
+				insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
+				}
+			});
+		*/
+						insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
 		}
 		
 		target.innerHTML = insert;
