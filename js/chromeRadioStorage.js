@@ -46,7 +46,11 @@ function getRadioItems() {
        if (key.substring(0, 8) == chromeRadioStoragePrefix) {
          storage_key = key.substring(8);
          res[storage_key] = localStorage.getItem( key ); // retrieve the value using the getItem method
-         output_string += "<li><a onclick=\"playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + res[storage_key] + "</a></li>";
+         output_string += "<li>" + 
+         "<a onclick=\"playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + res[storage_key] + "</a> " + 
+	 "<a onclick=\"deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a>" +
+         "</li>"
+;
        }
    }
 
@@ -59,4 +63,9 @@ function playme(url) {
   my_radio_player.setAttribute('src', url);
   my_radio_player.currentTime=0;
   my_radio_player.play();
+}
+
+function deleteme(url) {
+  window.localStorage.removeItem(chromeRadioStoragePrefix + url);
+  getRadioItems();
 }
