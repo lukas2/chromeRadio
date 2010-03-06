@@ -1,6 +1,20 @@
 <html>
 <head><title>My chromeRadio Library</title>
 <script src="js/chromeRadioStorage.js" type="text/javascript"></script>
+<script type="text/javascript">
+// This listener handles "Add this Mp3 to local storage" requests
+// sent from popup.html
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {
+    if (request.addmp3)
+	{
+		// Save the new link to storage.
+		console.log("addmp3: "+request.addmp3+", linktext: "+request.linktext);
+		setItem(chromeRadioStoragePrefix+request.addmp3, request.linktext);
+		getRadioItems();
+	}
+  });
+</script>
 </head>
 <body onload="getRadioItems()">
 

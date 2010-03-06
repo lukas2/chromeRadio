@@ -2,6 +2,14 @@
 <head>
 <script>
 
+	// send message to my-library.html to add the given link to local storage.
+	function addFileToLibrary(ref)
+	{
+		var mp3div = ref.parentNode;
+		var link = mp3div.childNodes[0];
+		chrome.extension.sendRequest({addmp3:link.href, linktext:link.innerHTML});
+	}
+
 	function updateList()
 	{
 		var target = document.getElementById("links_found");
@@ -13,7 +21,7 @@
 		var insert = "";
 		for(i = 0; i < bgLinks.length; i++)
 		{
-			insert+="<a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><br>";
+			insert+="<div class=\"mp3linknode\"><a onClick=\"play(this.href);\" href=\""+bgLinks[i].href+"\">"+bgLinks[i].text+"</a><input type=\"button\" value=\"Add To Library\" onClick=\"addFileToLibrary(this);\"></div>";
 		}
 		
 		target.innerHTML = insert;
@@ -21,6 +29,7 @@
 	
 	function play(href)
 	{
+		console.log("PLAY: "+href);
 		var playertarget = document.getElementById("player_area");
 		playertarget.innerHTML = genPlayerLink(href);
 	}

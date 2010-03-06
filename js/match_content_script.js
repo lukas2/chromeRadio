@@ -22,7 +22,7 @@
 		
 		for (var i = 0; i < nodes.length; i++)
 		{
-			console.log("a.href= "+nodes[i].href);
+			//console.log("a.href= "+nodes[i].href);
 			if (nodes[i].href.match(re) )
 			{
 				// ADD MP3 EXTENSION-LINKS TO NEW ARRAY
