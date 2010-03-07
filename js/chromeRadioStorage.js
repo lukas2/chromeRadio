@@ -60,6 +60,10 @@ function getRadioItems() {
 
 function playme(url) {
   var my_radio_player = document.getElementById("my-radio-player");
+  var my_radio_player_current_url = document.getElementById("my-radio-player-current-url");
+  
+  my_radio_player_current_url.innerHTML = "Currently playing: "+url;
+ 
   my_radio_player.setAttribute('src', url);
   my_radio_player.setAttribute('currentSrc', url);
   my_radio_player.currentTime=0;
@@ -71,3 +75,17 @@ function deleteme(url) {
   window.localStorage.removeItem(chromeRadioStoragePrefix + url);
   getRadioItems();
 }
+
+// instantly-play file listener
+
+	chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {		
+		console.log(request);
+		//alert(links);
+		if(request.playme){
+	
+		playme(request.playme);
+			
+		}
+	sendResponse({}); 
+	});

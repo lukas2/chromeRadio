@@ -37,13 +37,6 @@
 		}
 		else
 		{
-			if(request.playme){
-		
-				chrome.tabs.create({url:"my-library.html"});
-				chrome.extension.getURL("my-library.html").playme({});
-			
-			}
-
 			links = request;
 			chrome.browserAction.setBadgeText({text:links.length.toString()});
 			chrome.extension.getURL("popup.html").updateList();		
@@ -105,6 +98,7 @@
 	
 	function playFile(href)
 	{
+		chrome.tabs.create({url:"my-library.html"});
 		chrome.extension.sendRequest({playme:href});	
 	}
 	
