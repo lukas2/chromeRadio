@@ -105,18 +105,6 @@ table tr td
 		target.innerHTML = insert;
 	}
 	
-	function play(href)
-	{
-		console.log("PLAY: "+href);
-		var playertarget = document.getElementById("player_area");
-		playertarget.innerHTML = genPlayerLink(href);
-	}
-	
-	function genPlayerLink(href)
-	{
-		return "<audio autoplay controls src=\""+href+"\"></audio>";
-	}
-
 </script>
 </head>
 <body onLoad="updateList()" style="width:300px;";>

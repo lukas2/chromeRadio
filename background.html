@@ -28,6 +28,7 @@
 	chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {
 		
+		console.log(request);
 		//alert(links);
 		if (request == null)
 		{
@@ -36,10 +37,18 @@
 		}
 		else
 		{
+			if(request.playme){
+		
+				chrome.tabs.create({url:"my-library.html"});
+				chrome.extension.getURL("my-library.html").playme({});
+			
+			}
+
 			links = request;
 			chrome.browserAction.setBadgeText({text:links.length.toString()});
 			chrome.extension.getURL("popup.html").updateList();		
 		}
+
 
 		sendResponse({}); 
 	});
