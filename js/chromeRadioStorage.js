@@ -61,7 +61,9 @@ function getRadioItems() {
 function playme(url) {
   var my_radio_player = document.getElementById("my-radio-player");
   my_radio_player.setAttribute('src', url);
+  my_radio_player.setAttribute('currentSrc', url);
   my_radio_player.currentTime=0;
+  my_radio_player.load();
   my_radio_player.play();
 }
 
