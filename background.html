@@ -3,6 +3,9 @@
 	var links = null;
 	chromeRadioStoragePrefix = "mp3_url:";
 
+	
+	// *********** LISTENERS **************
+	
 	// this listener gets content_script results when user changed active tab
 	chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
 
@@ -10,6 +13,38 @@
 
 	});
 	
+	// this listener gets content_script results when user created a new tab
+	chrome.tabs.onCreated.addListener(function(tab) {
+		updateLinks(tab.id);
+	});
+	
+	// this listener gets content_script results when tab changed somehow
+	chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+		updateLinks(tabId);
+	});
+	
+	// LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
+
+	chrome.extension.onRequest.addListener(
+	function(request, sender, sendResponse) {
+		
+		//alert(links);
+		if (request == null)
+		{
+			chrome.browserAction.setBadgeText({text:"0"});	
+			chrome.extension.getURL("popup.html").updateList();	
+		}
+		else
+		{
+			links = request;
+			chrome.browserAction.setBadgeText({text:links.length.toString()});
+			chrome.extension.getURL("popup.html").updateList();		
+		}
+
+		sendResponse({}); 
+	});
+	
+	// *********** LOCAL STORAGE **************
 	
 	// simply add new mp3 without a message
 	// this is called in popup.html
@@ -52,31 +87,17 @@
 	  return value;
 	}
 	
+	// ************************
+	
 	function updateLinks(tabId)
 	{
 		chrome.tabs.sendRequest(tabId,{update:"true"});
 	}
 	
-	// LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
+	function playFile(href)
+	{
+		chrome.extension.sendRequest({playme:href});	
+	}
+	
 
-	chrome.extension.onRequest.addListener(
-	function(request, sender, sendResponse) {
-		
-		//alert(links);
-		if (request == null)
-		{
-			chrome.browserAction.setBadgeText({text:"0"});
-			//chrome.extension.getURL("popup.html").updateList();		
-			chrome.extension.getURL("popup.html").updateList();	
-		}
-		else
-		{
-			links = request;
-			chrome.browserAction.setBadgeText({text:links.length.toString()});
-			chrome.extension.getURL("popup.html").updateList();		
-		}
-
-		//document.getElementById("links_found").innerHTML = request:numlinks;
-		sendResponse({}); 
-	});
 </script>

@@ -58,14 +58,22 @@ table tr td
 	function addMP3LinkNode(href,text)
 	{
 		insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td>"+
-		"<td><a href=\"#\"><img src=\"/images/addtolibrary.jpg\" onmouseover=\"this.src='/images/addtolibrary_lit.jpg';\" onmouseout=\"this.src='/images/addtolibrary.jpg';\" onClick=\"addFileToLibrary(this);\"></a></td></tr>";	
+		"<td><a href=\"#\"><img src=\"/images/addtolibrary.jpg\" onmouseover=\"this.src='/images/addtolibrary_lit.jpg';\" onmouseout=\"this.src='/images/addtolibrary.jpg';\" onClick=\"addFileToLibrary(this);\"></a></td><td><a href=\"#\"><img src=\"/images/instantplay.jpg\" onmouseover=\"this.src='/images/instantplay_lit.jpg';\" onmouseout=\"this.src='/images/instantplay.jpg';\" onClick=\"play(this);\"></a></td></tr>";	
 	}
 	
 	// link-node without add-button
 	function addMP3LinkNodeNoButton(href,text)
 	{
-		insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td></tr>";	
+		insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td><td><a href=\"#\"><img src=\"/images/instantplay.jpg\" onmouseover=\"this.src='/images/instantplay_lit.jpg';\" onmouseout=\"this.src='/images/instantplay.jpg';\" onClick=\"play(this);\"></a></td></tr>";	
 	}
+	
+	function play(ref)
+	{
+		var mp3div = ref.parentNode.parentNode.parentNode;
+		var link = mp3div.childNodes[0].childNodes[0];
+		chrome.extension.getBackgroundPage().playFile(link.href);
+	}
+	
 	
 	function updateList()
 	{
