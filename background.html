@@ -1,6 +1,9 @@
 <script>
 
-	var links = null;
+	links = null;
+	/* this temporarily contains the tabid of the library-tab, used in playFile() below. */
+	myLibraryTabId = null;
+	
 	chromeRadioStoragePrefix = "mp3_url:";
 
 	
@@ -32,13 +35,21 @@
 		//alert(links);
 		if (request == null)
 		{
-			chrome.browserAction.setBadgeText({text:"0"});	
+			chrome.browserAction.setBadgeText({});	
 			chrome.extension.getURL("popup.html").updateList();	
 		}
 		else
 		{
 			links = request;
-			chrome.browserAction.setBadgeText({text:links.length.toString()});
+			if (links.length == 0)
+			{
+				chrome.browserAction.setBadgeText({text:""});
+			}
+			else
+			{
+				chrome.browserAction.setBadgeText({text:links.length.toString()});		
+			}
+			chrome.browserAction.setBadgeBackgroundColor({color:[0, 0, 164, 255]});
 			chrome.extension.getURL("popup.html").updateList();		
 		}
 
@@ -96,11 +107,44 @@
 		chrome.tabs.sendRequest(tabId,{update:"true"});
 	}
 	
+	
+	// play file instantly from popup.html
 	function playFile(href)
 	{
-		chrome.tabs.create({url:"my-library.html"});
-		chrome.extension.sendRequest({playme:href});	
+	
+		// first check if the library is already open
+		// if yes set myLibraryTabId (defined at top of this file) 
+		// just so we know that we can send it the play-message.
+		chrome.tabs.getAllInWindow(null,function(tabs) {
+			
+			for (i = 0; i < tabs.length; i++)
+			{
+				if(tabs[i].title.indexOf("My chromeRadio Library") >= 0)
+				{
+					myLibraryTabId = tabs[i].id;
+				}
+			}
+		
+		});
+		
+		if(myLibraryTabId != null)
+		{
+			// library already open. just send request.
+			chrome.extension.sendRequest({playme:href});
+		}
+		else
+		{
+			// library not open. open it, then send request.
+			// note: it only seems to work if "selected: true" (default) 
+			// (meaning: it has to be active for some reason.)
+			chrome.tabs.create({url:"my-library.html"});
+			chrome.extension.sendRequest({playme:href});
+		}
+		
+		// better reset in case user closes library tab.
+		myLibraryTabId = null;		
 	}
+	
 	
 
 </script>

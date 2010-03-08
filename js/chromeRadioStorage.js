@@ -81,11 +81,11 @@ function deleteme(url) {
 	chrome.extension.onRequest.addListener(
 	function(request, sender, sendResponse) {		
 		console.log(request);
+		sendResponse({}); //immediately
 		//alert(links);
 		if(request.playme){
 	
-		playme(request.playme);
+			playme(request.playme);
 			
 		}
-	sendResponse({}); 
 	});

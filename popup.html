@@ -7,8 +7,9 @@ body
 	font-family: sans-serif;
 	font-size: 13px;
 	line-height: 15px;
-	background: #EEE;
+	background: #FFF url("images/bggrey.jpg") repeat-x;
 }
+
 
 table tr td img
 {
@@ -31,6 +32,7 @@ a:link, a:hover, a:visited
 h1
 {
 	font-size: 13px;
+	padding-left:2px;
 }
 
 table tr td
@@ -44,6 +46,7 @@ table tr td
 <script>
 
 	var insert = "";
+	var showHREFs = false;
 	
 	// call background.html to add a new link to library
 	function addFileToLibrary(ref)
@@ -52,6 +55,13 @@ table tr td
 		var link = mp3div.childNodes[0].childNodes[0];
 		chrome.extension.getBackgroundPage().addToLibrary(link.href,link.innerHTML);
 		updateList();
+	}
+	
+	function toggleDisplay()
+	{
+		if (!showHREFs) showHREFs = true;
+		else showHREFs = false;
+		updateList();		
 	}
 	
 	// link-node with add-button
@@ -72,6 +82,9 @@ table tr td
 		var mp3div = ref.parentNode.parentNode.parentNode;
 		var link = mp3div.childNodes[0].childNodes[0];
 		chrome.extension.getBackgroundPage().playFile(link.href);
+		
+		//var debugd = document.getElementById("debugd");
+		//debugd.innerHTML = "ID: "+chrome.extension.getBackgroundPage().myLibraryTabId;
 	}
 	
 	
@@ -93,11 +106,26 @@ table tr td
 			
 			if (chrome.extension.getBackgroundPage().mp3IsInLibrary(bgLinks[i].href) == true)
 			{
-				addMP3LinkNodeNoButton(bgLinks[i].href, bgLinks[i].text);
+				if(showHREFs)
+				{
+					addMP3LinkNodeNoButton(bgLinks[i].href, bgLinks[i].href);
+				}
+				else
+				{
+					addMP3LinkNodeNoButton(bgLinks[i].href, bgLinks[i].text);
+				}
+				
 			}
 			else
 			{
-				addMP3LinkNode(bgLinks[i].href, bgLinks[i].text);
+				if(showHREFs)
+				{
+					addMP3LinkNode(bgLinks[i].href, bgLinks[i].href);
+				}
+				else
+				{
+					addMP3LinkNode(bgLinks[i].href, bgLinks[i].text);
+				}			
 			}	
 		}
 		
@@ -106,10 +134,10 @@ table tr td
 	
 </script>
 </head>
-<body onLoad="updateList()" style="width:300px;";>
-	<a style="float:right;" href="my-library.html" target="_blank"><img src="images/showlibrary.jpg" onmouseover="this.src='images/showlibrary_lit.jpg';" onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button"></a>
+<body onLoad="updateList()" style="width:auto; min-width:300px;";>
+	<a style="float:right;" onClick="toggleDisplay();"><img src="images/toggleview.jpg" onmouseover="this.src='images/toggleview_lit.jpg';" onmouseout="this.src='images/toggleview.jpg';"></a><a style="float:right;" href="my-library.html" target="_blank"><img src="images/showlibrary.jpg" onmouseover="this.src='images/showlibrary_lit.jpg';" onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button"></a>
     <h1>MP3-Links found:</h1>
     <p><table id="links_found"></table></p>
-<p></p>
+	<div id="debugd"></div>
   </body>
 </html>
