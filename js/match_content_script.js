@@ -18,7 +18,7 @@
 		mp3nodes = [];
 		var nodes = document.getElementsByTagName("a");
 		
-		var re = /([^\/\\]+)\.(mp3)$/i
+		var re = /([^\/\\]+)\.(mp3|ogg)$/i
 		
 		// ITERATE ALL LINKS AND CHECK FOR MP3-EXTENSION
 		
