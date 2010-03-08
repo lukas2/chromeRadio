@@ -1,8 +1,6 @@
 <script>
 
 	links = null;
-	/* this temporarily contains the tabid of the library-tab, used in playFile() below. */
-	myLibraryTabId = null;
 	
 	chromeRadioStoragePrefix = "mp3_url:";
 
@@ -117,32 +115,32 @@
 		// just so we know that we can send it the play-message.
 		chrome.tabs.getAllInWindow(null,function(tabs) {
 			
+			create = true;
 			for (i = 0; i < tabs.length; i++)
 			{
 				if(tabs[i].title.indexOf("My chromeRadio Library") >= 0)
 				{
-					myLibraryTabId = tabs[i].id;
+					create = false;
 				}
+			}
+			
+			if(create)
+			{
+				// library not open. open it, then send request.
+				// note: it only seems to work if "selected: true" (default) 
+				// (meaning: it has to be active for some reason.)
+				chrome.tabs.create({url:"my-library.html"});
 			}
 		
 		});
 		
-		if(myLibraryTabId != null)
-		{
-			// library already open. just send request.
-			chrome.extension.sendRequest({playme:href});
-		}
-		else
-		{
-			// library not open. open it, then send request.
-			// note: it only seems to work if "selected: true" (default) 
-			// (meaning: it has to be active for some reason.)
-			chrome.tabs.create({url:"my-library.html"});
-			chrome.extension.sendRequest({playme:href});
-		}
-		
-		// better reset in case user closes library tab.
-		myLibraryTabId = null;		
+		// this seems neccessary....
+		window.setTimeout("sendDelayedPlayRequest('"+href+"')", 750); 
+	}
+	
+	function sendDelayedPlayRequest(href)
+	{
+		chrome.extension.sendRequest({playme:href});
 	}
 	
 	
