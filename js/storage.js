@@ -50,6 +50,7 @@ chromeRadio = {
 	var key;
 	var len = localStorage.length;
 	var tunes = {};
+        var tunes_categories = {};
         var categories = {};
 	var output_string = "";
 	while ( ++i < len ) { 
@@ -57,17 +58,24 @@ chromeRadio = {
 	    if (key.substring(0, chromeRadio.storagePrefix.length) == chromeRadio.storagePrefix) {
 		storage_key = key.substring(chromeRadio.storagePrefix.length);
 		tunes[storage_key] = localStorage.getItem( key );
-		categories[storage_key] = localStorage.getItem(chromeRadio.categoryPrefix + storage_key);
-		console.log(chromeRadio.categoryPrefix + storage_key);
+		var category_name = localStorage.getItem(chromeRadio.categoryPrefix + storage_key)
+		tunes_categories[storage_key] = category_name;
+		categories[category_name] = category_name;
 		output_string += "<li>" + 
 		    "<a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a> " +
 		    " Category: " +
-		    categories[storage_key] +
+		    tunes_categories[storage_key] +
 		    "<a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a>" +
 		    "</li>"
 		    ;
 	    }
 	}
+
+	output_string += "<h2>Categories</h2><ul>";
+	for (category in categories) {
+	    output_string += "<li>" + (category) + "</li>";
+	}
+	output_string += "</ul>";
 
 	var my_library = document.getElementById("my_library");
 	my_library.innerHTML = output_string;
