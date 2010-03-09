@@ -3,13 +3,16 @@ if (!chromeRadio) var chromeRadio = {};
 chromeRadio = {
     storagePrefix: "mp3_url:",
     storageName: "mp3_name:",
+    categoryPrefix: "chromeRadioCat:",
 
     // Saves options to localStorage.
     saveMp3Url: function() {
 	var mp3_name = document.form_new_mp3.mp3_name.value;
-	var mp3_url = chromeRadio.storagePrefix + document.form_new_mp3.mp3_url.value;
-	chromeRadio.setItem(mp3_url, mp3_name);
+	var mp3_url = document.form_new_mp3.mp3_url.value;
+	var mp3_category = document.form_new_mp3.mp3_category.value;
 
+	chromeRadio.setItem(chromeRadio.storagePrefix + mp3_url, mp3_name);
+	chromeRadio.setItem(chromeRadio.categoryPrefix + mp3_category, mp3_url);
 	// Update status to let user know options were saved.
 	var status = document.getElementById("status");
 	status.innerHTML = "MP3 Saved into your Library.";
@@ -46,15 +49,20 @@ chromeRadio = {
 	var i = -1;
 	var key;
 	var len = localStorage.length;
-	var res = {};
+	var tunes = {};
+        var categories = {};
 	var output_string = "";
 	while ( ++i < len ) { 
-	    key = localStorage.key( i ); // retrieve the value of each key at each index
-	    if (key.substring(0, 8) == chromeRadio.storagePrefix) {
-		storage_key = key.substring(8);
-		res[storage_key] = localStorage.getItem( key ); // retrieve the value using the getItem method
+	    key = localStorage.key( i );
+	    if (key.substring(0, chromeRadio.storagePrefix.length) == chromeRadio.storagePrefix) {
+		storage_key = key.substring(chromeRadio.storagePrefix.length);
+		tunes[storage_key] = localStorage.getItem( key );
+		categories[storage_key] = localStorage.getItem(chromeRadio.categoryPrefix + storage_key);
+		console.log(chromeRadio.categoryPrefix + storage_key);
 		output_string += "<li>" + 
-		    "<a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + res[storage_key] + "</a> " + 
+		    "<a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a> " +
+		    " Category: " +
+		    categories[storage_key] +
 		    "<a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a>" +
 		    "</li>"
 		    ;
@@ -85,10 +93,10 @@ chromeRadio = {
 
     importLibrary: function () {
 	var importTextarea = document.getElementById('import_textarea');
-	var resJSONString = importTextarea.value;
-	var res = JSON.parse(resJSONString);
-	for (var i in res) {
-	    var this_item = res[i];
+	var tunesJSONString = importTextarea.value;
+	var tunes = JSON.parse(tunesJSONString);
+	for (var i in tunes) {
+	    var this_item = tunes[i];
 	    chromeRadio.setItem(chromeRadio.storagePrefix + this_item[chromeRadio.storagePrefix], this_item[chromeRadio.storageName]);
 	}
 	chromeRadio.getRadioItems();
@@ -98,7 +106,7 @@ chromeRadio = {
 	var i = -1;
 	var key;
 	var len = localStorage.length;
-	var res = {};
+	var tunes = {};
 	var output_string = "";
 	while ( ++i < len ) { 
 	    key = localStorage.key( i );
@@ -107,12 +115,12 @@ chromeRadio = {
 		storage_key = key.substring(8);
 		this_item[chromeRadio.storagePrefix] = storage_key;
 		this_item[chromeRadio.storageName] = localStorage.getItem( key );
-		res[i] = this_item;
+		tunes[i] = this_item;
 	    }
 	}
-	var resJSONString = JSON.stringify(res);
+	var tunesJSONString = JSON.stringify(tunes);
 	var exportTextarea = document.getElementById('export_textarea');
-	exportTextarea.value = resJSONString;
+	exportTextarea.value = tunesJSONString;
 	chromeRadio.showMe("div_export_textarea");
     },
 
