@@ -1,4 +1,5 @@
 chromeRadioStoragePrefix = "mp3_url:";
+chromeRadioStorageName = "mp3_name:";
 
 // Saves options to localStorage.
 function saveMp3Url() {
@@ -76,6 +77,49 @@ function deleteme(url) {
   getRadioItems();
 }
 
+function importLibrary() {
+  var importTextarea = document.getElementById('import_textarea');
+  var resJSONString = importTextarea.value;
+  var res = JSON.parse(resJSONString);
+  for (var i in res) {
+    var this_item = res[i];
+    setItem(chromeRadioStoragePrefix + this_item[chromeRadioStoragePrefix], this_item[chromeRadioStorageName]);
+  }
+  getRadioItems();
+}
+
+function exportLibrary() {
+  var i = -1;
+  var key;
+  var len = localStorage.length;
+  var res = {};
+  var output_string = "";
+  while ( ++i < len ) { 
+    key = localStorage.key( i );
+    if (key.substring(0, 8) == chromeRadioStoragePrefix) {
+      var this_item = {};
+      storage_key = key.substring(8);
+      this_item[chromeRadioStoragePrefix] = storage_key;
+      this_item[chromeRadioStorageName] = localStorage.getItem( key );
+      res[i] = this_item;
+    }
+  }
+  var resJSONString = JSON.stringify(res);
+  var exportTextarea = document.getElementById('export_textarea');
+  exportTextarea.value = resJSONString;
+  showMe("div_export_textarea");
+}
+
+function showMe(divName) {
+  var divExportTextarea = document.getElementById(divName);
+  divExportTextarea.style.display = "block";
+}
+
+function hideMe(divName) {
+  var divExportTextarea = document.getElementById(divName);
+  divExportTextarea.style.display = "none";
+}
+
 // instantly-play file listener
 
 	chrome.extension.onRequest.addListener(
@@ -89,3 +133,4 @@ function deleteme(url) {
 			
 		}
 	});
+

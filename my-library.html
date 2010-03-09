@@ -5,70 +5,89 @@
 <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js"></script>
 <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 
-
-
-
-
 </head>
 <body onload="getRadioItems()">
 <script type = "text/javascript">
-    // initialize plugin code
-	$(function() {
-		$("#tabs").tabs();
-	});
-
+  $(function() {
+    $("#tabs").tabs();
+  });
 </script>
 
 <div id="tabs">
-	<ul>
-		<li><a href="#tabs-1">Your Library</a></li>
-		<li><a href="#tabs-2">Add MP3 files to chromeRadio</a></li>
-		<li><a href="#tabs-3">Sites for testing</a></li>
-		<li><a href="#tabs-4">Player</a></li>
-	</ul>
+  <ul>
+    <li><a href="#tabs-1">Your Library</a></li>
+    <li><a href="#tabs-2">Add MP3 files to chromeRadio</a></li>
+    <li><a href="#tabs-3">Sites for testing</a></li>
+    <li><a href="#tabs-4">Player</a></li>
+  </ul>
+
+  <div id="tabs-1" >
+    <ul>
+      <div id="my_library"></div>
+    </ul>
+
+    <a href="#" 
+      onclick="exportLibrary(); return false;">Export Library</a>
+    <div id="div_export_textarea" style="display:none;">
+      <h2>Export data</h2>
+      <p>Copy and paste the textarea content 
+         into a file and then save it.</p>
+      <textarea id="export_textarea" 
+         name="export_textarea" cols="50" rows="10"></textarea>
+      <a href="#" 
+        onclick="hideMe('div_export_textarea'); return false;">Done</a>
+    </div>
+
+    <a href="#" 
+       onclick="showMe('div_import_textarea'); return false;">
+       Import Library</a>                
+      <div id="div_import_textarea" style="display:none;">
+      <h2>Import data</h2>
+      <p>Copy and paste the textarea content 
+        into a file and then save it.</p>
+      <textarea id="import_textarea" 
+        name="import_textarea" cols="50" rows="10">{"0":{"mp3_url:":"http://chaosradio.ccc.de/archive/chaosradio_154.mp3","mp3_name:":"Chaosradio 154"},"1":{"mp3_url:":"http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8","mp3_name:":"Richtiger Song"},"2":{"mp3_url:":"http://dradio.ic.llnwd.net/stream/dradio_dlf_m_a.ogg","mp3_name:":"Deutschlandradio"}}</textarea>
+      <input type="submit" 
+        value="Import data" onclick="importLibrary(); return false;">
+      <a href="#" 
+        onclick="hideMe('div_import_textarea'); return false;">Done</a>
+    </div>
+  </div>
+        
+        
+        
+
+        <div id="tabs-2">
+                <form id="form_new_mp3" name="form_new_mp3">
+                <p>Name: <br /><input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200"></p> 
+                <p>URL: <br /><input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200"></p>
+                </form>
+                <button onclick="saveMp3Url()">Save</button>
+                <div id="status"></div>
+        </div>
+        
 
 
-	
-	<div id="tabs-1" >
-		<ul>
-			<div id="my_library"></div>
-		</ul>
-	</div>
-	
-	
-	
-
-	<div id="tabs-2">
-		<form id="form_new_mp3" name="form_new_mp3">
-		<p>Name: <br /><input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200"></p>	
-		<p>URL: <br /><input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200"></p>
-		</form>
-		<button onclick="saveMp3Url()">Save</button>
-		<div id="status"></div>
-	</div>
-	
-
-
-	<div id="tabs-3">
-		<div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
-		Einige Seiten zum Testen der Extension:
-		<ul>
-			<li><a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a></li>
-			<li><a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a></li>
-			<li><a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a></li>
-			<li><a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a></li>
-			<li><a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a></li>
-		</ul>
-		</div>
-	</div>
-	
-	<div id="tabs-4" >
-		<div id="my-radio-player-div">
-		<audio id="my-radio-player" autoplay="true" src="" controls="controls"></audio>	
-		</div>
-		<div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">Player stopped.</div>
-	</div>
-		
+        <div id="tabs-3">
+                <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
+                Einige Seiten zum Testen der Extension:
+                <ul>
+                        <li><a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a></li>
+                        <li><a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a></li>
+                        <li><a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a></li>
+                        <li><a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a></li>
+                        <li><a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a></li>
+                </ul>
+                </div>
+        </div>
+        
+        <div id="tabs-4" >
+                <div id="my-radio-player-div">
+                <audio id="my-radio-player" autoplay="true" src="" controls="controls"></audio> 
+                </div>
+                <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">Player stopped.</div>
+        </div>
+                
 <div>
 
 </body>
