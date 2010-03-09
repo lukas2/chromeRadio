@@ -1,9 +1,7 @@
+<script type="text/javascript" src="js/chromeRadioStorage.js"></script>
 <script>
 
 	links = null;
-	
-	chromeRadioStoragePrefix = "mp3_url:";
-
 	
 	// *********** LISTENERS **************
 	
@@ -34,7 +32,7 @@
 		if (request == null)
 		{
 			chrome.browserAction.setBadgeText({});	
-			chrome.extension.getURL("popup.html").updateList();	
+	                chrome.extension.getURL("popup.html").updateList();
 		}
 		else
 		{
@@ -48,7 +46,8 @@
 				chrome.browserAction.setBadgeText({text:links.length.toString()});		
 			}
 			chrome.browserAction.setBadgeBackgroundColor({color:[0, 0, 164, 255]});
-			chrome.extension.getURL("popup.html").updateList();		
+	                chrome.extension.getURL("popup.html").updateList();
+
 		}
 
 
@@ -59,21 +58,17 @@
 	
 	// simply add new mp3 without a message
 	// this is called in popup.html
-	function addToLibrary(href,text)
-	{
-		setItem(chromeRadioStoragePrefix+href, text);
+	function addToLibrary(href,text) {
+		setItem(chromeRadio.storagePrefix+href, text);
 	}
 	
 	// check for popup.html if given mp3 already is in local storage.
 	function mp3IsInLibrary(href)
 	{
 		console.log("checking: "+href);
-		if(getItem(chromeRadioStoragePrefix+href) != null)
-		{
+		if(getItem(chromeRadio.storagePrefix+href) != null) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
