@@ -4,7 +4,16 @@
 <script type="text/javascript" src="js/popup.js"></script>
 </head>
 <body onLoad="updateList()" style="width:auto; min-width:300px;";>
-  <a style="float:right;" onClick="toggleDisplay();"><img src="images/toggleview.jpg" onmouseover="this.src='images/toggleview_lit.jpg';" onmouseout="this.src='images/toggleview.jpg';"></a><a style="float:right;" href="my-library.html" target="_blank"><img src="images/showlibrary.jpg" onmouseover="this.src='images/showlibrary_lit.jpg';" onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button"></a>
+  <a style="float:right;" onClick="toggleDisplay();">
+    <img src="images/toggleview.jpg" 
+    onmouseover="this.src='images/toggleview_lit.jpg';" 
+    onmouseout="this.src='images/toggleview.jpg';">
+  </a>
+  <a style="float:right;" href="my-library.html" target="_blank">
+    <img src="images/showlibrary.jpg" 
+    onmouseover="this.src='images/showlibrary_lit.jpg';" 
+    onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button">
+  </a>
   <h1>MP3-Links found:</h1>
   <p><table id="links_found"></table></p>
   <div id="debugd"></div>
