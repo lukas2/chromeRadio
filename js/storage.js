@@ -110,7 +110,9 @@ chromeRadio = {
 	output_string += "<option value=\"movecat2\">Move To Category 2</option>";
 	output_string += "<option value=\"export\">Export</option>";
 	
-	output_string += "</select></td><td><input type=\"button\" value=\"OK\"></td></tr>";
+	output_string += "</select></td><td><input type=\"button\" value=\"OK\"></td>"+
+	
+	"<td style=\"border-left: 1px solid #000;\">&nbsp;Create New Category:</td><td><input type=\"text\" id=\"new_cat_textfield\"></td><td><input type=\"button\" onClick=\"createNewCategory();\" value=\"Ok\"></tr>";
 	output_string += "</table>";
 
 	output_string += "<h2>Categories</h2><ul>";
