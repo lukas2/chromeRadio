@@ -6,6 +6,11 @@ chromeRadio.storage = {
     storageName: "mp3_name:",
     categoryPrefix: "chromeRadioCat:",
 
+    createNewCategory: function() {
+	var category_field = document.getElementById("new_cat_textfield");
+	saveCategory(category_field.value);
+    },
+
     saveCategory: function(new_category) {
 	chromeRadio.storage.setItem(
 	  chromeRadio.storage.categoryPrefix + new_category, 
@@ -113,7 +118,7 @@ chromeRadio.storage = {
 	
 	output_string += "</select></td><td><input type=\"button\" value=\"OK\"></td>"+
 	
-	"<td style=\"border-left: 1px solid #000;\">&nbsp;Create New Category:</td><td><input type=\"text\" id=\"new_cat_textfield\"></td><td><input type=\"button\" onClick=\"createNewCategory();\" value=\"OK\"></tr>";
+	'<td style="border-left: 1px solid #000;">&nbsp;Create New Category:</td><td><input type="text" id="new_cat_textfield"></td><td><input type="submit" onClick="chromeRadio.storage.createNewCategory(); return false;" value="Add"></td></tr>';
 	output_string += "</table>";
 
 	output_string += "<h2>Categories</h2><ul>";
