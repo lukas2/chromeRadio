@@ -107,3 +107,35 @@ table tr td {
 {
 	text-decoration: underline;
 }
+
+#content
+{
+	width: 100%;
+	border: 1px solid green;
+}
+
+#links_found tr td
+{
+	padding: 3px;
+}
+
+#links_found tr td a:link, #links_found tr td a:visited
+{
+
+}
+
+#links_found tr td a:hover
+{
+	text-decoration: underline;
+	color: #00F;
+}
+
+.popup_button a:link, .popup_button a:visited
+{
+}
+
+.popup_button a:hover
+{
+	text-decoration: underline;
+	color: #00F;	
+}

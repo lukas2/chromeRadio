@@ -3,19 +3,17 @@
 <link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 <script type="text/javascript" src="js/popup.js"></script>
 </head>
-<body onLoad="updateList()" style="width:auto; min-width:300px;";>
-  <a style="float:right;" onClick="toggleDisplay();">
-    <img src="images/toggleview.jpg" 
-    onmouseover="this.src='images/toggleview_lit.jpg';" 
-    onmouseout="this.src='images/toggleview.jpg';">
+<body onLoad="updateList()" style="min-width:300px;";>
+<div id="content">
+  <a class="popup_button" href="#" onClick="toggleDisplay();">
+    Toggle View | 
   </a>
-  <a style="float:right;" href="my-library.html" target="_blank">
-    <img src="images/showlibrary.jpg" 
-    onmouseover="this.src='images/showlibrary_lit.jpg';" 
-    onmouseout="this.src='images/showlibrary.jpg';" alt="Library Button">
+  <a class="popup_button" href="my-library.html" target="_blank">
+    Show Library
   </a>
   <h1>MP3-Links found:</h1>
   <p><table id="links_found"></table></p>
   <div id="debugd"></div>
+</div>
   </body>
 </html>

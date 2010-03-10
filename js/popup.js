@@ -3,7 +3,7 @@ var showHREFs = false;
 	
 // call background.html to add a new link to library
 function addFileToLibrary(ref) {
-    var mp3div = ref.parentNode.parentNode.parentNode;
+    var mp3div = ref.parentNode.parentNode;
     var link = mp3div.childNodes[0].childNodes[0];
     chrome.extension.getBackgroundPage().addToLibrary(link.href,link.innerHTML);
     updateList();
@@ -18,16 +18,16 @@ function toggleDisplay() {
 // link-node with add-button
 function addMP3LinkNode(href,text) {
     insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td>"+
-	"<td><a href=\"#\"><img src=\"/images/addtolibrary.jpg\" onmouseover=\"this.src='/images/addtolibrary_lit.jpg';\" onmouseout=\"this.src='/images/addtolibrary.jpg';\" onClick=\"addFileToLibrary(this);\"></a></td><td><a href=\"#\"><img src=\"/images/instantplay.jpg\" onmouseover=\"this.src='/images/instantplay_lit.jpg';\" onmouseout=\"this.src='/images/instantplay.jpg';\" onClick=\"play(this);\"></a></td></tr>";	
+	"<td><a href=\"#\" onClick=\"addFileToLibrary(this);\">Add to Library</a></td><td><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
 }
 	
 // link-node without add-button
 function addMP3LinkNodeNoButton(href,text) {
-    insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td><td><a href=\"#\"><img src=\"/images/instantplay.jpg\" onmouseover=\"this.src='/images/instantplay_lit.jpg';\" onmouseout=\"this.src='/images/instantplay.jpg';\" onClick=\"play(this);\"></a></td></tr>";	
+    insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td><td><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
 }
 	
 function play(ref) {
-    var mp3div = ref.parentNode.parentNode.parentNode;
+    var mp3div = ref.parentNode.parentNode;
     var link = mp3div.childNodes[0].childNodes[0];
     chrome.extension.getBackgroundPage().playFile(link.href);
 		
