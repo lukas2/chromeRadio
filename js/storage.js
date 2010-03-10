@@ -195,7 +195,7 @@ function(request, sender, sendResponse) {
 	//alert(links);
 	if(request.playme){
 
-		playme(request.playme);
+		chromeRadio.playme(request.playme);
 		
 	}
 });
