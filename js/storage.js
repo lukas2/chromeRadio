@@ -6,9 +6,25 @@ chromeRadio.storage = {
     storageName: "mp3_name:",
     categoryPrefix: "chromeRadioCat:",
 
+    getAllCategories: function() {
+        var categories = {};
+	var i = -1;
+	var len = localStorage.length;
+	while ( ++i < len ) { 
+	    key = localStorage.key( i );
+	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) {
+		storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
+		var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key)
+		categories[category_name] = category_name;
+	    }
+	}
+	console.log(categories);
+    },
+
     createNewCategory: function() {
 	var category_field = document.getElementById("new_cat_textfield");
-	saveCategory(category_field.value);
+	chromeRadio.storage.saveCategory(category_field.value);
+	chromeRadio.storage.getRadioItems();
     },
 
     saveCategory: function(new_category) {
@@ -85,9 +101,7 @@ chromeRadio.storage = {
 		    ;		
 			
 			flipcolor = false;
-		}
-		else
-		{
+		} else {
 		output_string += "<tr>" + 
 		    "<td class=\"line2\"><input type=\"checkbox\" name=\"check_"+storage_key+"\"/></td>"+
 			"<td class=\"line2\"><a onclick=\"chromeRadio.storage.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
@@ -96,11 +110,8 @@ chromeRadio.storage = {
 		    "</td><td class=\"line2\"><a onclick=\"chromeRadio.storage.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
 		    "</tr>"
 		    ;	
-			
-			flipcolor = true;
+		flipcolor = true;
 		}
-		
-
 	    }
 	}
 	
@@ -129,6 +140,7 @@ chromeRadio.storage = {
 
 	var my_library = document.getElementById("my_library");
 	my_library.innerHTML = output_string;
+	chromeRadio.storage.getAllCategories();
     },
 
     playme: function (url) {
