@@ -59,40 +59,23 @@
 	// simply add new mp3 without a message
 	// this is called in popup.html
 	function addToLibrary(href,text) {
-		setItem(chromeRadio.storagePrefix+href, text);
+		//(chromeRadio.storagePrefix+href, text);
+		//setItem(chromeRadio.storage.storagePrefix + href, text);
+		chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + href, text);
+
 	}
 	
 	// check for popup.html if given mp3 already is in local storage.
 	function mp3IsInLibrary(href)
 	{
 		console.log("checking: "+href);
-		if(getItem(chromeRadio.storagePrefix+href) != null) {
+		if(chromeRadio.storage.getItem(chromeRadio.storage.storagePrefix+href) != null) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	function setItem(key, value) {
-	  try {
-		window.localStorage.removeItem(key);
-		window.localStorage.setItem(key, value);
-	  }catch(e) {
-	  }
-	}
-
-	//Gets the item from local storage with the specified key
-	function getItem(key) {
-	  var value;
-	  try {
-		value = window.localStorage.getItem(key);
-	  }catch(e) {
-		//value = "null";
-		return null;
-	  }
-	  return value;
-	}
-	
+		
 	// ************************
 	
 	function updateLinks(tabId)
