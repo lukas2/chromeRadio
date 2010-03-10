@@ -52,7 +52,12 @@ chromeRadio = {
 	var tunes = {};
         var tunes_categories = {};
         var categories = {};
-	var output_string = "";
+	var output_string = "<table class=\"library_table\">";
+	
+	output_string += "<tr><td class=\"lineheader\"><a onClick=\"selectAll();\" href=\"#\">All</a> <a  onClick=\"selectNone();\" href=\"#\">None</a></td><td class=\"lineheader\">File</td><td class=\"lineheader\">Category</td><td class=\"lineheader\">Action</td></tr>";
+	
+	var flipcolor = false;
+	
 	while ( ++i < len ) { 
 	    key = localStorage.key( i );
 	    if (key.substring(0, chromeRadio.storagePrefix.length) == chromeRadio.storagePrefix) {
@@ -61,15 +66,52 @@ chromeRadio = {
 		var category_name = localStorage.getItem(chromeRadio.categoryPrefix + storage_key)
 		tunes_categories[storage_key] = category_name;
 		categories[category_name] = category_name;
-		output_string += "<li>" + 
-		    "<a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a> " +
-		    " Category: " +
+		
+		if(flipcolor)
+		{
+		output_string += "<tr>" + 
+		    "<td class=\"line1\"><input type=\"checkbox\" name=\"check_"+storage_key+"\"/></td>"+
+			"<td class=\"line1\"><a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
+		    "<td class=\"line1\"> Category: " +
 		    tunes_categories[storage_key] +
-		    "<a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a>" +
-		    "</li>"
-		    ;
+		    "</td><td class=\"line1\"><a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
+		    "</tr>"
+		    ;		
+			
+			flipcolor = false;
+		}
+		else
+		{
+		output_string += "<tr>" + 
+		    "<td class=\"line2\"><input type=\"checkbox\" name=\"check_"+storage_key+"\"/></td>"+
+			"<td class=\"line2\"><a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
+		    "<td class=\"line2\"> Category: " +
+		    tunes_categories[storage_key] +
+		    "</td><td class=\"line2\"><a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
+		    "</tr>"
+		    ;	
+			
+			flipcolor = true;
+		}
+		
+
 	    }
 	}
+	
+	output_string += "</table>";
+	
+	output_string += "<table class=\"controls_table\">";
+	
+	output_string += "<tr><td style=\"font-weight: bold;\">With Selected: </td>";
+	output_string += "<td><select id=\"action_select\">";
+	
+	output_string += "<option value=\"delete\">Delete Selected</option>";
+	output_string += "<option value=\"movecat1\">Move To Category 1</option>";
+	output_string += "<option value=\"movecat2\">Move To Category 2</option>";
+	output_string += "<option value=\"export\">Export</option>";
+	
+	output_string += "</select></td><td><input type=\"button\" value=\"OK\"></td></tr>";
+	output_string += "</table>";
 
 	output_string += "<h2>Categories</h2><ul>";
 	for (category in categories) {
@@ -155,4 +197,24 @@ function(request, sender, sendResponse) {
 		
 	}
 });
+
+// SELECT ALL CHECKBOXES IN LIBRARY
+function selectAll()
+{
+	var boxes = document.getElementsByClassName("library_table")[0].getElementsByTagName("input");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		boxes[i].checked = true;
+	}
+}
+
+// UN-SELECT ALL CHECKBOXES IN LIBRARY
+function selectNone()
+{
+	var boxes = document.getElementsByClassName("library_table")[0].getElementsByTagName("input");
+	for (var i = 0; i < boxes.length; i++)
+	{
+		boxes[i].checked = false;
+	}
+}
 

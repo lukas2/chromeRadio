@@ -38,3 +38,58 @@ table tr td
 	font-size: 13px;
 	vertical-align: middle;
 }
+
+.library_table
+{
+	width: 100%;
+	margin: 0;
+	border-collapse: 0;
+	border-spacing: 0;
+	border: 1px solid #777;
+	border-bottom: none;
+}
+
+.library_table tr td
+{
+	padding-left: 5px;
+	padding-right: 5px;
+	border-bottom: 1px solid #777;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.lineheader
+{
+	font-weight: bold;
+}
+
+.lineheader a:link, .lineheader a:visited
+{
+	color: #777;
+	font-weight: normal;
+}
+
+.lineheader a:hover
+{
+	color: #000;
+	text-decoration: underline;
+	font-weight: normal;
+}
+
+.line1
+{
+	background: #CCC;
+}
+
+.line2
+{
+	background: #EEE;
+}
+
+.controls_table
+{	
+	background: #EEE;
+	margin-top: 15px;
+	border: 1px solid #000;
+	padding: 3px;
+}
