@@ -112,7 +112,7 @@ chromeRadio = {
 	
 	output_string += "</select></td><td><input type=\"button\" value=\"OK\"></td>"+
 	
-	"<td style=\"border-left: 1px solid #000;\">&nbsp;Create New Category:</td><td><input type=\"text\" id=\"new_cat_textfield\"></td><td><input type=\"button\" onClick=\"createNewCategory();\" value=\"Ok\"></tr>";
+	"<td style=\"border-left: 1px solid #000;\">&nbsp;Create New Category:</td><td><input type=\"text\" id=\"new_cat_textfield\"></td><td><input type=\"button\" onClick=\"createNewCategory();\" value=\"OK\"></tr>";
 	output_string += "</table>";
 
 	output_string += "<h2>Categories</h2><ul>";

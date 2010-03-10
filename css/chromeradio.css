@@ -97,3 +97,13 @@ table tr td {
 	padding-left: 8px;
 	font-weight: bold;
 }	
+
+#tabs-5 a:link, #tabs-5 a:visited
+{
+	font-weight: bold;
+}
+
+#tabs-5 a:hover
+{
+	text-decoration: underline;
+}
