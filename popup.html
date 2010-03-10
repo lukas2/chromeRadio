@@ -1,19 +1,67 @@
 <html>
 <head>
-<link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+<style>
+body {
+	font-family: sans-serif;
+	font-size: 11px;
+	line-height: 15px;
+	background: #FFF url("../images/bggrey.jpg") repeat-x;
+	margin:0;
+	padding:5px;
+	min-width: 300px;
+}
+
+h1 {
+	font-size: 13px;
+	padding-left:2px;
+}
+
+a:link, a:hover, a:visited {
+	text-decoration: none;
+	color: #000;
+	font-size:11px;
+}
+
+
+#links_found tr td
+{
+	padding: 3px;
+}
+
+#links_found tr td a:link, #links_found tr td a:visited
+{
+
+}
+
+#links_found tr td a:hover
+{
+	text-decoration: underline;
+	color: #00F;
+}
+
+.popup_button a:link, .popup_button a:visited
+{
+	
+}
+
+.popup_button a:hover
+{
+	text-decoration: underline;
+	color: #00F;	
+}
+</style>
 <script type="text/javascript" src="js/popup.js"></script>
 </head>
-<body onLoad="updateList()" style="min-width:300px;";>
-<div id="content">
+<body onLoad="updateList()">
+<div style="float:right;">
   <a class="popup_button" href="#" onClick="toggleDisplay();">
     Toggle View | 
   </a>
   <a class="popup_button" href="my-library.html" target="_blank">
     Show Library
   </a>
-  <h1>MP3-Links found:</h1>
-  <p><table id="links_found"></table></p>
-  <div id="debugd"></div>
 </div>
+  <h1 style="margin-top:0;">MP3-Links found:</h1>
+  <table id="links_found"></table>
   </body>
 </html>

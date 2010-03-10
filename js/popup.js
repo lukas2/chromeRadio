@@ -17,13 +17,13 @@ function toggleDisplay() {
 	
 // link-node with add-button
 function addMP3LinkNode(href,text) {
-    insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td>"+
-	"<td><a href=\"#\" onClick=\"addFileToLibrary(this);\">Add to Library</a></td><td><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
+    insert+="<tr><td nowrap class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td>"+
+	"<td nowrap><a href=\"#\" onClick=\"addFileToLibrary(this);\">Add to Library</a></td><td nowrap><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
 }
 	
 // link-node without add-button
 function addMP3LinkNodeNoButton(href,text) {
-    insert+="<tr><td class=\"mp3linknode\"><a href=\""+href+"\">"+text+"</a></td><td></td><td><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
+    insert+="<tr><td class=\"mp3linknode\" nowrap><a href=\""+href+"\">"+text+"</a></td><td nowrap></td><td nowrap><a href=\"#\" onClick=\"play(this);\">Play Track</a></td></tr>";	
 }
 	
 function play(ref) {
