@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 
 </head>
-<body onload="chromeRadio.getRadioItems()">
+<body onload="chromeRadio.storage.getRadioItems()">
 <script type = "text/javascript">
   $(function() {
     $("#tabs").tabs();
@@ -25,13 +25,13 @@
   </ul>
 
   <div id="tabs-1" >
-	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.search.search();"/>--></div>
+	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>--></div>
     <div id="headerdiv"><h1>These are all the music files in your library:</h1></div>
       <div id="my_library"></div>
     
 
     <a href="#" 
-      onclick="chromeRadio.exportLibrary(); return false;">Export Library</a>
+      onclick="chromeRadio.storage.exportLibrary(); return false;">Export Library</a>
     <div id="div_export_textarea" style="display:none;">
       <h2>Export data</h2>
       <p>Copy and paste the textarea content 
@@ -43,7 +43,7 @@
     </div>
 
     <a href="#" 
-       onclick="chromeRadio.showMe('div_import_textarea'); return false;">
+       onclick="chromeRadio.storage.showMe('div_import_textarea'); return false;">
        Import Library</a>                
       <div id="div_import_textarea" style="display:none;">
       <h2>Import data</h2>
@@ -52,9 +52,9 @@
       <textarea id="import_textarea" 
         name="import_textarea" cols="50" rows="10">{"0":{"mp3_url:":"http://chaosradio.ccc.de/archive/chaosradio_154.mp3","mp3_name:":"Chaosradio 154"},"1":{"mp3_url:":"http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8","mp3_name:":"Richtiger Song"},"2":{"mp3_url:":"http://dradio.ic.llnwd.net/stream/dradio_dlf_m_a.ogg","mp3_name:":"Deutschlandradio"}}</textarea>
       <input type="submit" 
-        value="Import data" onclick="chromeRadio.importLibrary(); return false;">
+        value="Import data" onclick="chromeRadio.storage.importLibrary(); return false;">
       <a href="#" 
-        onclick="chromeRadio.hideMe('div_import_textarea'); return false;">Done</a>
+        onclick="chromeRadio.storage.hideMe('div_import_textarea'); return false;">Done</a>
     </div>
   </div>
         
@@ -67,7 +67,7 @@
       <p>URL: <br /><input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200"></p>
       <p>Category: <br /><input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200"></p> 
     </form>
-    <button onclick="chromeRadio.saveMp3Url()">Save</button>
+    <button onclick="chromeRadio.storage.saveMp3Url()">Save</button>
     <div id="status"></div>
   </div>
   

@@ -1,18 +1,24 @@
 if (!chromeRadio) var chromeRadio = {};
+if (!chromeRadio.storage) chromeRadio.storage = {};
 
-chromeRadio = {
+chromeRadio.storage = {
     storagePrefix: "mp3_url:",
     storageName: "mp3_name:",
     categoryPrefix: "chromeRadioCat:",
 
-    // Saves options to localStorage.
+    saveCategory: function(new_category) {
+	chromeRadio.storage.setItem(
+	  chromeRadio.storage.categoryPrefix + new_category, 
+	  new_category);
+    },
+
     saveMp3Url: function() {
 	var mp3_name = document.form_new_mp3.mp3_name.value;
 	var mp3_url = document.form_new_mp3.mp3_url.value;
 	var mp3_category = document.form_new_mp3.mp3_category.value;
 
-	chromeRadio.setItem(chromeRadio.storagePrefix + mp3_url, mp3_name);
-	chromeRadio.setItem(chromeRadio.categoryPrefix + mp3_category, mp3_url);
+	chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + mp3_url, mp3_name);
+	chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + mp3_category, mp3_url);
 	// Update status to let user know options were saved.
 	var status = document.getElementById("status");
 	status.innerHTML = "MP3 Saved into your Library.";
@@ -20,9 +26,6 @@ chromeRadio = {
 		status.innerHTML = "";
 	    }, 750);
 	getRadioItems();
-    },
-
-    saveMp3Item: function (name, url, category) {
     },
 
     setItem: function (key, value) {
@@ -33,7 +36,6 @@ chromeRadio = {
 	}
     },
 
-    //Gets the item from local storage with the specified key
     getItem: function (key) {
 	var value;
 	try {
@@ -44,7 +46,6 @@ chromeRadio = {
 	return value;
     },
 
-    // Get all stored radio items
     getRadioItems: function () {
 	var i = -1;
 	var key;
@@ -60,10 +61,10 @@ chromeRadio = {
 	
 	while ( ++i < len ) { 
 	    key = localStorage.key( i );
-	    if (key.substring(0, chromeRadio.storagePrefix.length) == chromeRadio.storagePrefix) {
-		storage_key = key.substring(chromeRadio.storagePrefix.length);
+	    if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
+		storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
 		tunes[storage_key] = localStorage.getItem( key );
-		var category_name = localStorage.getItem(chromeRadio.categoryPrefix + storage_key)
+		var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key)
 		tunes_categories[storage_key] = category_name;
 		categories[category_name] = category_name;
 		
@@ -71,10 +72,10 @@ chromeRadio = {
 		{
 		output_string += "<tr>" + 
 		    "<td class=\"line1\"><input type=\"checkbox\" name=\"check_"+storage_key+"\"/></td>"+
-			"<td class=\"line1\"><a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
+			"<td class=\"line1\"><a onclick=\"chromeRadio.storage.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
 		    "<td class=\"line1\"> Category: " +
 		    tunes_categories[storage_key] +
-		    "</td><td class=\"line1\"><a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
+		    "</td><td class=\"line1\"><a onclick=\"chromeRadio.storage.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
 		    "</tr>"
 		    ;		
 			
@@ -84,10 +85,10 @@ chromeRadio = {
 		{
 		output_string += "<tr>" + 
 		    "<td class=\"line2\"><input type=\"checkbox\" name=\"check_"+storage_key+"\"/></td>"+
-			"<td class=\"line2\"><a onclick=\"chromeRadio.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
+			"<td class=\"line2\"><a onclick=\"chromeRadio.storage.playme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\"> " + tunes[storage_key] + "</a></td>" +
 		    "<td class=\"line2\"> Category: " +
 		    tunes_categories[storage_key] +
-		    "</td><td class=\"line2\"><a onclick=\"chromeRadio.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
+		    "</td><td class=\"line2\"><a onclick=\"chromeRadio.storage.deleteme(this.id);return false;\" href=\"#\" id=\"" + storage_key + "\">delete me</a></td>" +
 		    "</tr>"
 		    ;	
 			
@@ -139,8 +140,8 @@ chromeRadio = {
     },
 
     deleteme: function (url) {
-	window.localStorage.removeItem(chromeRadio.storagePrefix + url);
-	chromeRadio.getRadioItems();
+	window.localStorage.removeItem(chromeRadio.storage.storagePrefix + url);
+	chromeRadio.storage.getRadioItems();
     },
 
     importLibrary: function () {
@@ -149,9 +150,9 @@ chromeRadio = {
 	var tunes = JSON.parse(tunesJSONString);
 	for (var i in tunes) {
 	    var this_item = tunes[i];
-	    chromeRadio.setItem(chromeRadio.storagePrefix + this_item[chromeRadio.storagePrefix], this_item[chromeRadio.storageName]);
+	    chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + this_item[chromeRadio.storage.storagePrefix], this_item[chromeRadio.storage.storageName]);
 	}
-	chromeRadio.getRadioItems();
+	chromeRadio.storage.getRadioItems();
     },
 
     exportLibrary: function () {
@@ -162,18 +163,18 @@ chromeRadio = {
 	var output_string = "";
 	while ( ++i < len ) { 
 	    key = localStorage.key( i );
-	    if (key.substring(0, 8) == chromeRadio.storagePrefix) {
+	    if (key.substring(0, 8) == chromeRadio.storage.storagePrefix) {
 		var this_item = {};
 		storage_key = key.substring(8);
-		this_item[chromeRadio.storagePrefix] = storage_key;
-		this_item[chromeRadio.storageName] = localStorage.getItem( key );
+		this_item[chromeRadio.storage.storagePrefix] = storage_key;
+		this_item[chromeRadio.storage.storageName] = localStorage.getItem( key );
 		tunes[i] = this_item;
 	    }
 	}
 	var tunesJSONString = JSON.stringify(tunes);
 	var exportTextarea = document.getElementById('export_textarea');
 	exportTextarea.value = tunesJSONString;
-	chromeRadio.showMe("div_export_textarea");
+	chromeRadio.storage.showMe("div_export_textarea");
     },
 
     showMe: function (divName) {
@@ -195,7 +196,7 @@ function(request, sender, sendResponse) {
 	//alert(links);
 	if(request.playme){
 
-		chromeRadio.playme(request.playme);
+		chromeRadio.storage.playme(request.playme);
 		
 	}
 });
