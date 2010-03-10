@@ -1,5 +1,7 @@
+if (!chromeRadio) var chromeRadio = {};
+if (!chromeRadio.search) var chromeRadio.search = {};
 
-function search()
-{
-	//TO-DO Lukas
+chromeRadio.search = {
+    search: function() {
+    }
 }
