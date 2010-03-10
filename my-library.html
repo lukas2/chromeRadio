@@ -6,14 +6,31 @@
 <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js"></script>
 <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
 <link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+<script type="text/javascript">
 
-</head>
-<body onload="chromeRadio.storage.getRadioItems()">
-<script type = "text/javascript">
   $(function() {
     $("#tabs").tabs();
   });
+ 	$(function() {
+
+  $('#accordion').append
+    categories = chromeRadio.storage.getAllCategories();
+    console.log(categories)
+    for (category in categories) {
+      console.log(category)
+      if(category=="")continue;
+      $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
+      $('#accordion').append('<div id="'+category+'"></div>');
+      
+    }
+    $("#accordion").accordion({
+      event: "mouseover"
+    });
+  });
 </script>
+</head>
+<body onload="chromeRadio.storage.getRadioItems();">
+
 
 <div id="tabs">
   <ul>
@@ -27,9 +44,36 @@
   <div id="tabs-1" >
 	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>--></div>
     <div id="headerdiv"><h1>These are all the music files in your library:</h1></div>
-      <div id="my_library"></div>
-    
+  <div id="my_library"></div>
+  <div id="accordion"></div>
+		<table class="controls_table">
+	
+			<tr>
+				<td style="font-weight: bold;">With Selected: </td>
+					<td>
+						<select id="action_select">
+							<option value="delete">Delete Selected</option>
+							<option value="movecat1">Move To Category 1</option>
+							<option value="movecat2">Move To Category 2</option>
+							<option value="export">Export</option>
+						</select>
+					</td>
+					<td>
+						<input type="button" value="OK">
+					</td>
+					<td style="border-left: 1px solid #000;">
+						&nbsp;Create New Category:
+					</td>
+					<td>
+						<input type="text" id="new_cat_textfield">
+					</td>
+					<td>
+						<input type="button" onClick="createNewCategory();" value="Ok">
+					</tr>
+			</table>
+      
 
+  
     <a href="#" 
       onclick="chromeRadio.storage.exportLibrary(); return false;">Export Library</a>
     <div id="div_export_textarea" style="display:none;">
