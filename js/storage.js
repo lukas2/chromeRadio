@@ -89,7 +89,7 @@ chromeRadio.storage = {
 	 var target = document.getElementById("action_select");
 	
 	 categories = chromeRadio.storage.getAllCategories();
-	
+	 var insert="";
 	 for (category in categories) {
 		insert+="<option value=\""+category+"\">"+category+"</option>";
 	 }
