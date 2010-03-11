@@ -109,8 +109,8 @@ chromeRadio.storage = {
   {
 	  var selectfield = document.getElementById("action_select");
 	  var selindex  = selectfield.selectedIndex
-      var selvalue = selectfield.options[selindex].value
-	  
+    var selvalue = selectfield.options[selindex].value
+
 	  
 	  if(selvalue == "act_export")
 	  {
@@ -126,12 +126,18 @@ chromeRadio.storage = {
 	  }
 	  else if(selvalue == "act_delete")
 	  {
-	  
+      var items = chromeRadio.storage.getSelectedItems();
 	  }
-	  else if(selvalue.indexOf("cat_") == 0)
+	  else 
 	  {
+        var categories = getAllCategories();
 		// move to category
-		var catname = selvalue.substirng(4,selvalue.length);
+        for(category in categories){
+	        if(selvalue.indexOf(category) == 0){
+		        //move to selvalue to secified category
+		    }
+        }
+        
 		
 		// HERE SOME MOVE-CODE
 		
@@ -143,6 +149,26 @@ chromeRadio.storage = {
   
   },
   
+
+//  getSelectedItems: function(){
+//    var i=0;    
+//    var selectedMp3Items;
+//    while (i++ < localStorage.length) {
+//      key = localStorage.key(i);
+//      if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
+//        storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
+//        selectedMp3Items += document.getElementByName('check_'+storage_key);
+//      }
+//    }
+//    console.log(selectedMp3Items);
+//  
+//  },
+
+//	moveMp3toCategorie: function(){
+//    var i=0;
+
+//	},
+
   /** 
    * GET ITEMS FROM LIBRARY AND DISPLAY THEM
    */
