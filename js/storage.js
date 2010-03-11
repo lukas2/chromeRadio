@@ -27,6 +27,8 @@ chromeRadio.storage = {
     var category_field = document.getElementById("new_cat_textfield");
     chromeRadio.storage.saveCategory(category_field.value);
     chromeRadio.storage.getRadioItems();
+	// refresh page
+	window.location.reload();
   },
   
   saveCategory: function(new_category){
@@ -69,6 +71,35 @@ chromeRadio.storage = {
     return value;
   },
   
+  /**
+   * THIS IS CALLED WHEN MY-LIBRARY LOADS 
+   * 2 TASKS: GET ITEMS AND GET PULL-DOWN MENU
+   */
+  initializeEverything: function()
+  {
+	chromeRadio.storage.getRadioItems();
+    chromeRadio.storage.getControls();
+  },
+  
+  /**
+   * GET PULL-DOWN MENU
+   */
+  getControls: function()
+  {
+	 var target = document.getElementById("action_select");
+	
+	 categories = chromeRadio.storage.getAllCategories();
+	 alert("cat");
+	 for (category in categories) {
+		insert+="<option value=\""+category+"\">"+category+"</option>";
+	 {
+	 	 
+	 target.innerHTML = insert;
+  },
+  
+  /** 
+   * GET ITEMS FROM LIBRARY AND DISPLAY THEM
+   */
   getRadioItems: function(){
     var i = -1;
     var key;

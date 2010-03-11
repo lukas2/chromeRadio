@@ -41,7 +41,7 @@
       });
     </script>
   </head>
-  <body onload="chromeRadio.storage.getRadioItems();">
+  <body onload="chromeRadio.storage.initializeEverything();">
     <div id="tabs">
       <ul>
         <li>
@@ -99,10 +99,7 @@
                 </td>
                 <td>
                   <select id="action_select">
-                    <option value="delete">Delete Selected</option>
-                    <option value="movecat1">Move To Category 1</option>
-                    <option value="movecat2">Move To Category 2</option>
-                    <option value="export">Export</option>
+
                   </select>
                 </td>
                 <td>
