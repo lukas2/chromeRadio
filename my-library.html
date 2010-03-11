@@ -24,10 +24,10 @@
             continue;
           $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
           $('#accordion').append('<div id="' + category + '"></div>');
-          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNoneCat"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body"></tbody></table>');
+          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body"></tbody></table>');
           $('#table' + category).width('100%');
-          $('#tableNotInCategory').width('100%');
-          $('#allNoneCat').width('20px');
+          $('#' + category).css('padding', '0');
+
         }
         $('#accordion').accordion({
           autoHeight: false,
@@ -37,8 +37,14 @@
         
         });
       });
-    $(function(){$('#allNone').width('20px');});
- 
+      $(function(){
+        $('#allNone').css('width','20px');
+        $('#notCatagoriesed').css('padding', '0');
+        $('#allMp3s').css('padding', '0');
+        $('#tableNotInCategory').width('100%');
+        $('#tableAllMp3s').width('100%');
+
+      });
     </script>
   </head>
   <body onload="chromeRadio.storage.initializeEverything();">
@@ -67,24 +73,44 @@
             <div id="headerdiv">
               <h1>These are all the music files in your library:</h1>
             </div>
-            <h2>Here are your Files that are not in any Category:</h2>
-            <table id="tableNotInCategory" class="ui-widget ui-widget-content">
-              <thead class="ui-widget-header ">
-                <tr>
-                  <th id="allNone">
-                    <a onClick="selectAll();" href="#">All</a>
-                    <a onClick="selectNone();" href="#">None</a>
-                  </th>
-                  <th>
-                    File 
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="bodyNotInCategory">
-              </tbody>
-            </table>
-            <h2>Here are your Categories:</h2>
             <div id="accordion">
+              <h3><a href="#">All</a></h3>
+              <div id="allMp3s">
+                <table id="tableAllMp3s" class="ui-widget ui-widget-content">
+                  <thead class="ui-widget-header ">
+                    <tr>
+                      <th id="allNone">
+                        <a onClick="selectAll();" href="#">All</a>
+                        <a onClick="selectNone();" href="#">None</a>
+                      </th>
+                      <th>
+                        File 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="bodyAllMp3s">
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3><a href="#">Not Catagoriesed</a></h3>
+              <div id="notCatagoriesed">
+                <table id="tableNotInCategory" class="ui-widget ui-widget-content">
+                  <thead class="ui-widget-header ">
+                    <tr>
+                      <th id="allNone">
+                        <a onClick="selectAll();" href="#">All</a>
+                        <a onClick="selectNone();" href="#">None</a>
+                      </th>
+                      <th>
+                        File 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="bodyNotInCategory">
+                  </tbody>
+                </table>
+              </div>
             </div>
             <table class="controls_table">
               <tr>
@@ -93,7 +119,6 @@
                 </td>
                 <td>
                   <select id="action_select">
-
                   </select>
                 </td>
                 <td>
@@ -108,30 +133,7 @@
                 <td>
                   <input type="button" onClick="chromeRadio.storage.createNewCategory();" value="Ok">
                   </tr>
-                </table><a href="#" onclick="chromeRadio.storage.exportLibrary(); return false;">Export Library</a>
-                <div id="div_export_textarea" style="display:none;">
-                  <h2>Export data</h2>
-                  <p>
-                    Copy and paste the textarea content 
-                    into a file and then save it.
-                  </p>
-                  <textarea id="export_textarea" name="export_textarea" cols="50" rows="10">
-                  </textarea>
-                  <a href="#" onclick="hideMe('div_export_textarea'); return false;">Done</a>
-                </div>
-                <a href="#" onclick="chromeRadio.storage.showMe('div_import_textarea'); return false;">Import Library</a>
-                <div id="div_import_textarea" style="display:none;">
-                  <h2>Import data</h2>
-                  <p>
-                    Copy and paste the textarea content 
-                    into a file and then save it.
-                  </p>
-                  <textarea id="import_textarea" name="import_textarea" cols="50" rows="10">
-                    {"0":{"mp3_url:":"http://chaosradio.ccc.de/archive/chaosradio_154.mp3","mp3_name:":"Chaosradio 154"},"1":{"mp3_url:":"http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8","mp3_name:":"Richtiger Song"},"2":{"mp3_url:":"http://dradio.ic.llnwd.net/stream/dradio_dlf_m_a.ogg","mp3_name:":"Deutschlandradio"}}
-                  </textarea>
-                  <input type="submit" value="Import data" onclick="chromeRadio.storage.importLibrary(); return false;"><a href="#" onclick="chromeRadio.storage.hideMe('div_import_textarea'); return false;">Done</a>
-                </div>
-                </div>
+                </table>
                 <div id="tabs-2">
                   <form id="form_new_mp3" name="form_new_mp3">
                     <p>
@@ -242,6 +244,6 @@
                   </p>
                 </div>
                 <div>
-              </body>
+                </body>
               </html>
 
