@@ -156,50 +156,36 @@ chromeRadio.storage = {
     var output_string = "";
     
     var flipcolor = false;
+    var element ="";
     
     while (++i < len) {
       key = localStorage.key(i);
       if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
         storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
         tunes[storage_key] = localStorage.getItem(key);
-        var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key)
-        tunes_categories[storage_key] = category_name;
-        categories[category_name] = category_name;
-        
-        if (flipcolor) {
-          output_string += "<tr>" +
-          "<td class=\"line1\"><input type=\"checkbox\" name=\"check_" +
-          storage_key +
-          "\"/></td>" +
-          "<td class=\"line1\"><a onclick=\"chromeRadio.storage.playme(this.id);return false;\" href=\"#\" id=\"" +
-          storage_key +
-          "\"> " +
-          tunes[storage_key] +
-          "</a></td>";
-          
-          flipcolor = false;
-        }
-        else {
-          output_string += "<tr>" +
-          "<td class=\"line2\"><input type=\"checkbox\" name=\"check_" +
-          storage_key +
-          "\"/></td>" +
-          "<td class=\"line2\"><a onclick=\"chromeRadio.storage.playme(this.id);return false;\" href=\"#\" id=\"" +
-          storage_key +
-          "\"> " +
-          tunes[storage_key] +
-          "</a></td>";
-          flipcolor = true;
-        }
+        element = "bodyAllMp3s";
+      }
+      if(key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.)  
+      if (flipcolor) {
+        output_string += chromeRadio.storage.genTable(storage_key,flipcolor);
+        flipcolor = false;
+      }
+      else {
+        output_string += chromeRadio.storage.genTable(storage_key ,flipcolor);
+        flipcolor = true;
+
       }
     }
-    var my_library = document.getElementById("bodyNotInCategory");
+    var my_library = document.getElementById(element);
     my_library.innerHTML = output_string;
-    
-    
-    
   },
-  
+  genTable: function(storage_key, flipcolor){
+      var output_string = "<tr>" +
+      '<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+storage_key +'"/></td>' +
+      '<td id="'+((flipcolor)?'line1':'line2')+'"><a onclick="chromeRadio.storage.playme(this.id);return false;"'+
+      'href="#" id="' + storage_key +'">' + storage_key +'</a></td>';
+      return output_string;
+  },
   playme: function(url){
     var my_radio_player = document.getElementById("my-radio-player");
     var my_radio_player_current_url = document.getElementById("my-radio-player-current-url");
