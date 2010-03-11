@@ -90,12 +90,29 @@ chromeRadio.storage = {
 	
 	 categories = chromeRadio.storage.getAllCategories();
 	 var insert="";
+	 insert+="<option value=\"act_delete\">Delete Selected</option>";
+	 insert+="<option value=\"act_nop\">----</option>";
 	 for (category in categories) {
-		insert+="<option value=\""+category+"\">"+category+"</option>";
+		insert+="<option value=\"cat_"+category+"\">Move to Category \""+category+"\"</option>";
 	 }
-	 	 
+	 insert+="<option value=\"act_nop\">----</option>";
+	 insert+="<option value=\"act_export\">Export Library</option>";
+	 insert+="<option value=\"act_import\">Import Library</option>";
+	 
 	 target.innerHTML = insert;
   },
+  
+  /** 
+   * HANDLER FOR THE PULL-DOWN MENU
+   */
+  performWithSelected: function()
+  {
+	  var selectfield = document.getElementById("action_select");
+	  var selindex  = selectfield.selectedIndex
+      var selvalue = selectfield.options[selindex].value
+	  
+	  
+  }
   
   /** 
    * GET ITEMS FROM LIBRARY AND DISPLAY THEM
