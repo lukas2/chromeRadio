@@ -5,7 +5,7 @@
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js"></script>
 <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-<link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+<!--<link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />-->
 <script type="text/javascript">
 
   $(function() {
@@ -21,10 +21,12 @@
       if(category=="")continue;
       $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
       $('#accordion').append('<div id="'+category+'"></div>');
+      $('#'+category).append('<table id="table'+category+'" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="'+category+'Body"></tbody></table>');
       
     }
     $("#accordion").accordion({
-      event: "mouseover"
+ 			autoHeight: false,
+			navigation: true
     });
   });
 </script>
@@ -44,7 +46,7 @@
   <div id="tabs-1" >
 	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>--></div>
     <div id="headerdiv"><h1>These are all the music files in your library:</h1></div>
-  <div id="my_library"></div>
+
   <div id="accordion"></div>
 		<table class="controls_table">
 	

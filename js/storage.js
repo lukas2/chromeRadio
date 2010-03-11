@@ -77,7 +77,7 @@ chromeRadio.storage = {
         var tunes = {};
         var tunes_categories = {};
         var categories = {};
-        var output_string = '<table class="library_table"> <tr> <td class="lineheader"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </td> <td class="lineheader"> File </td> <td class="lineheader"> Category </td> <td class="lineheader"> Action </td> </tr>'
+        var output_string ="";
         
         var flipcolor = false;
         
@@ -129,10 +129,11 @@ chromeRadio.storage = {
                 }
             }
         }
-
-        output_string += '</table>'
         var my_library = document.getElementById("my_library");
         my_library.innerHTML = output_string;  
+
+
+
     },
     
     playme: function(url){
