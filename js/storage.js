@@ -212,7 +212,8 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
 
 // SELECT ALL CHECKBOXES IN LIBRARY
 function selectAll(){
-    var boxes = document.getElementsByClassName("library_table")[0].getElementsByTagName("input");
+    var boxes = document.getElementById('bodyNotInCategory').getElementsByTagName('input');
+
     for (var i = 0; i < boxes.length; i++) {
         boxes[i].checked = true;
     }
@@ -220,7 +221,7 @@ function selectAll(){
 
 // UN-SELECT ALL CHECKBOXES IN LIBRARY
 function selectNone(){
-    var boxes = document.getElementsByClassName("library_table")[0].getElementsByTagName("input");
+    var boxes = document.getElementById('bodyNotInCategory').getElementsByTagName('input');
     for (var i = 0; i < boxes.length; i++) {
         boxes[i].checked = false;
     }
