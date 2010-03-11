@@ -126,7 +126,7 @@ chromeRadio.storage = {
 	  }
 	  else if(selvalue == "act_delete")
 	  {
-      var items = chromeRadio.storage.getSelectedItems();
+      var items = chromeRadio.storage.getSelectedMp3s();
 	  }
 	  else 
 	  {
@@ -150,24 +150,24 @@ chromeRadio.storage = {
   },
   
 
-//  getSelectedItems: function(){
-//    var i=0;    
-//    var selectedMp3Items;
-//    while (i++ < localStorage.length) {
-//      key = localStorage.key(i);
-//      if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
-//        storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
-//        selectedMp3Items += document.getElementByName('check_'+storage_key);
-//      }
-//    }
-//    console.log(selectedMp3Items);
-//  
-//  },
+  getSelectedMp3s: function(){
+    var i=0;    
+    var selectedMp3Items;
+    while (i++ < localStorage.length) {
+      key = localStorage.key(i);
+      if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
+        storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
+        selectedMp3Items += document.getElementsByName('check_'+storage_key)[0];
+      }
+    }
+    console.log(selectedMp3Items);
+  
+  },
 
-//	moveMp3toCategorie: function(){
-//    var i=0;
+	moveMp3toCategorie: function(){
+    var i=0;
 
-//	},
+	},
 
   /** 
    * GET ITEMS FROM LIBRARY AND DISPLAY THEM
@@ -292,7 +292,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
 
 // SELECT ALL CHECKBOXES IN LIBRARY
 function selectAll(){
-  var boxes = document.getElementById('bodyNotInCategory').getElementsByTagName('input');
+  var boxes = document.getElementById('bodyAllMp3s').getElementsByTagName('input');
   
   for (var i = 0; i < boxes.length; i++) {
     boxes[i].checked = true;
@@ -301,7 +301,7 @@ function selectAll(){
 
 // UN-SELECT ALL CHECKBOXES IN LIBRARY
 function selectNone(){
-  var boxes = document.getElementById('bodyNotInCategory').getElementsByTagName('input');
+  var boxes = document.getElementById('bodyAllMp3s').getElementsByTagName('input');
   for (var i = 0; i < boxes.length; i++) {
     boxes[i].checked = false;
   }
