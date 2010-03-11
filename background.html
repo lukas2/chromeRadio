@@ -1,126 +1,129 @@
-<script type="text/javascript" src="js/storage.js"></script>
-<script>
-
-	links = null;
-	
-	// *********** LISTENERS **************
-	
-	// this listener gets content_script results when user changed active tab
-	chrome.tabs.onSelectionChanged.addListener(function(tabId, info) {
-
-		updateLinks(tabId);
-
-	});
-	
-	// this listener gets content_script results when user created a new tab
-	chrome.tabs.onCreated.addListener(function(tab) {
-		updateLinks(tab.id);
-	});
-	
-	// this listener gets content_script results when tab changed somehow
-	chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-		updateLinks(tabId);
-	});
-	
-	// LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
-
-	chrome.extension.onRequest.addListener(
-	function(request, sender, sendResponse) {
-		
-		console.log(request);
-		//alert(links);
-		if (request == null)
-		{
-			chrome.browserAction.setBadgeText({});	
-	                chrome.extension.getURL("popup.html").updateList();
-		}
-		else
-		{
-			links = request;
-			if (links.length == 0)
-			{
-				chrome.browserAction.setBadgeText({text:""});
-			}
-			else
-			{
-				chrome.browserAction.setBadgeText({text:links.length.toString()});		
-			}
-			chrome.browserAction.setBadgeBackgroundColor({color:[0, 0, 164, 255]});
-	                chrome.extension.getURL("popup.html").updateList();
-
-		}
-
-
-		sendResponse({}); 
-	});
-	
-	// *********** LOCAL STORAGE **************
-	
-	// simply add new mp3 without a message
-	// this is called in popup.html
-	function addToLibrary(href,text) {
-		//(chromeRadio.storagePrefix+href, text);
-		//setItem(chromeRadio.storage.storagePrefix + href, text);
-		chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + href, text);
-
-	}
-	
-	// check for popup.html if given mp3 already is in local storage.
-	function mp3IsInLibrary(href)
-	{
-		console.log("checking: "+href);
-		if(chromeRadio.storage.getItem(chromeRadio.storage.storagePrefix+href) != null) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-		
-	// ************************
-	
-	function updateLinks(tabId)
-	{
-		chrome.tabs.sendRequest(tabId,{update:"true"});
-	}
-	
-	
-	// play file instantly from popup.html
-	function playFile(href)
-	{
-	
-		// first check if the library is already open
-		// if yes set myLibraryTabId (defined at top of this file) 
-		// just so we know that we can send it the play-message.
-		chrome.tabs.getAllInWindow(null,function(tabs) {
-			
-			create = true;
-			for (i = 0; i < tabs.length; i++)
-			{
-				if(tabs[i].title.indexOf("My chromeRadio Library") >= 0)
-				{
-					create = false;
-				}
-			}
-			
-			if(create)
-			{
-				// library not open. open it, then send request.
-				// note: it only seems to work if "selected: true" (default) 
-				// (meaning: it has to be active for some reason.)
-				chrome.tabs.create({url:"my-library.html"});
-			}
-		
-		});
-		
-		// this seems neccessary....
-		window.setTimeout("sendDelayedPlayRequest('"+href+"')", 750); 
-	}
-	
-	function sendDelayedPlayRequest(href)
-	{
-		chrome.extension.sendRequest({playme:href});
-	}
-	
-	
-
+<script type="text/javascript" src="js/storage.js">
 </script>
+<script>
+  
+  links = null;
+  
+  // *********** LISTENERS **************
+  
+  // this listener gets content_script results when user changed active tab
+  chrome.tabs.onSelectionChanged.addListener(function(tabId, info){
+  
+    updateLinks(tabId);
+    
+  });
+  
+  // this listener gets content_script results when user created a new tab
+  chrome.tabs.onCreated.addListener(function(tab){
+    updateLinks(tab.id);
+  });
+  
+  // this listener gets content_script results when tab changed somehow
+  chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+    updateLinks(tabId);
+  });
+  
+  // LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
+  
+  chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
+  
+    console.log(request);
+    //alert(links);
+    if (request == null) {
+      chrome.browserAction.setBadgeText({});
+      chrome.extension.getURL("popup.html").updateList();
+    }
+    else {
+      links = request;
+      if (links.length == 0) {
+        chrome.browserAction.setBadgeText({
+          text: ""
+        });
+      }
+      else {
+        chrome.browserAction.setBadgeText({
+          text: links.length.toString()
+        });
+      }
+      chrome.browserAction.setBadgeBackgroundColor({
+        color: [0, 0, 164, 255]
+      });
+      chrome.extension.getURL("popup.html").updateList();
+      
+    }
+    
+    
+    sendResponse({});
+  });
+  
+  // *********** LOCAL STORAGE **************
+  
+  // simply add new mp3 without a message
+  // this is called in popup.html
+  function addToLibrary(href, text){
+    //(chromeRadio.storagePrefix+href, text);
+    //setItem(chromeRadio.storage.storagePrefix + href, text);
+    chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + href, text);
+    
+  }
+  
+  // check for popup.html if given mp3 already is in local storage.
+  function mp3IsInLibrary(href){
+    console.log("checking: " + href);
+    if (chromeRadio.storage.getItem(chromeRadio.storage.storagePrefix + href) != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  
+  // ************************
+  
+  function updateLinks(tabId){
+    chrome.tabs.sendRequest(tabId, {
+      update: "true"
+    });
+  }
+  
+  
+  // play file instantly from popup.html
+  function playFile(href){
+  
+    // first check if the library is already open
+    // if yes set myLibraryTabId (defined at top of this file) 
+    // just so we know that we can send it the play-message.
+    chrome.tabs.getAllInWindow(null, function(tabs){
+    
+      create = true;
+      for (i = 0; i < tabs.length; i++) {
+        if (tabs[i].title.indexOf("My chromeRadio Library") >= 0) {
+          create = false;
+        }
+      }
+      
+      if (create) {
+        // library not open. open it, then send request.
+        // note: it only seems to work if "selected: true" (default) 
+        // (meaning: it has to be active for some reason.)
+        chrome.tabs.create({
+          url: "my-library.html"
+        });
+      }
+      
+    });
+    
+    // this seems neccessary....
+    window.setTimeout("sendDelayedPlayRequest('" + href + "')", 750);
+  }
+  
+  function sendDelayedPlayRequest(href){
+    chrome.extension.sendRequest({
+      playme: href
+    });
+  }
+  
+  
+  
+</script>
+

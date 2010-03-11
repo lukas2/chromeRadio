@@ -1,214 +1,256 @@
 <html>
-<head><title>My chromeRadio Library</title>
-<script type="text/javascript" src="js/storage.js"></script>
-<script type="text/javascript" src="js/search.js"></script>
-<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js"></script>
-<link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-<!--<link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />-->
-<script type="text/javascript">
-
-  $(function() {
-    $("#tabs").tabs();
-  });
- 	$(function() {
-
-    $('#accordion').append
-      categories = chromeRadio.storage.getAllCategories();
-      console.log(categories)
-      for (category in categories) {
-        console.log(category)
-        if(category=="")continue;
-        $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
-        $('#accordion').append('<div id="'+category+'"></div>');
-        $('#'+category).append('<table id="table'+category+'" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="'+category+'Body"></tbody></table>');
-          $('#table'+category).width('100%');
-          $('#tableNotInCategory').width('100%');
-      }
-      $('#accordion').accordion({
-   			autoHeight: false,
-        collapsible: true,
-			  navigation: true,
-        active:false
-
-      });
-  });
-
-
-</script>
-</head>
-<body onload="chromeRadio.storage.getRadioItems();">
-
-
-<div id="tabs">
-  <ul>
-    <li><a href="#tabs-1">Your Library</a></li>
-    <li><a href="#tabs-2">Add MP3 files to chromeRadio</a></li>
-    <li><a href="#tabs-3">Sites for testing</a></li>
-    <li><a href="#tabs-4">Player</a></li>
-	<li><a href="#tabs-5">About</a><li>
-  </ul>
-
-  <div id="tabs-1" >
-	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>--></div>
-    <div id="headerdiv"><h1>These are all the music files in your library:</h1></div>
-    <h2> Here are your Files that are not in any Category:</h2>
-    <table id="tableNotInCategory" class="ui-widget ui-widget-content">
-    <thead class="ui-widget-header ">
-        <tr>
-            <th>
-                <a onClick="selectAll();" href="#">All</a>
-                <a onClick="selectNone();" href="#">None</a>
-            </th>
-            <th>
-                File 
-            </th>
-            <th>
-                Category
-            </th>
-            <th>
-                Action 
-            </th>
-        </tr>
-    </thead>
-    <tbody id="bodyNotInCategory">
-    </tbody>
-</table>
-<h2>Here are your Categories:</h2>
-  <div id="accordion"></div>
-		<table class="controls_table">
-	
-			<tr>
-				<td style="font-weight: bold;">With Selected: </td>
-					<td>
-						<select id="action_select">
-							<option value="delete">Delete Selected</option>
-							<option value="movecat1">Move To Category 1</option>
-							<option value="movecat2">Move To Category 2</option>
-							<option value="export">Export</option>
-						</select>
-					</td>
-					<td>
-						<input type="button" value="OK">
-					</td>
-					<td style="border-left: 1px solid #000;">
-						&nbsp;Create New Category:
-					</td>
-					<td>
-						<input type="text" id="new_cat_textfield">
-					</td>
-					<td>
-						<input type="button" onClick="chromeRadio.storage.createNewCategory();" value="Ok">
-					</tr>
-			</table>
+  <head>
+    <title>My chromeRadio Library</title>
+    <script type="text/javascript" src="js/storage.js">
+    </script>
+    <script type="text/javascript" src="js/search.js">
+    </script>
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js">
+    </script>
+    <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js">
+    </script>
+    <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <!--<link rel="stylesheet" href="css/chromeradio.css" type="text/css" media="screen" title="no title" charset="utf-8" />-->
+    <script type="text/javascript">
       
-
-  
-    <a href="#" 
-      onclick="chromeRadio.storage.exportLibrary(); return false;">Export Library</a>
-    <div id="div_export_textarea" style="display:none;">
-      <h2>Export data</h2>
-      <p>Copy and paste the textarea content 
-         into a file and then save it.</p>
-      <textarea id="export_textarea" 
-         name="export_textarea" cols="50" rows="10"></textarea>
-      <a href="#" 
-        onclick="hideMe('div_export_textarea'); return false;">Done</a>
-    </div>
-
-    <a href="#" 
-       onclick="chromeRadio.storage.showMe('div_import_textarea'); return false;">
-       Import Library</a>                
-      <div id="div_import_textarea" style="display:none;">
-      <h2>Import data</h2>
-      <p>Copy and paste the textarea content 
-        into a file and then save it.</p>
-      <textarea id="import_textarea" 
-        name="import_textarea" cols="50" rows="10">{"0":{"mp3_url:":"http://chaosradio.ccc.de/archive/chaosradio_154.mp3","mp3_name:":"Chaosradio 154"},"1":{"mp3_url:":"http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8","mp3_name:":"Richtiger Song"},"2":{"mp3_url:":"http://dradio.ic.llnwd.net/stream/dradio_dlf_m_a.ogg","mp3_name:":"Deutschlandradio"}}</textarea>
-      <input type="submit" 
-        value="Import data" onclick="chromeRadio.storage.importLibrary(); return false;">
-      <a href="#" 
-        onclick="chromeRadio.storage.hideMe('div_import_textarea'); return false;">Done</a>
-    </div>
-  </div>
+      $(function(){
+        $("#tabs").tabs();
+      });
+      $(function(){
+      
+        $('#accordion').append
+        categories = chromeRadio.storage.getAllCategories();
+        console.log(categories)
+        for (category in categories) {
+          console.log(category)
+          if (category == "") 
+            continue;
+          $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
+          $('#accordion').append('<div id="' + category + '"></div>');
+          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="' + category + 'Body"></tbody></table>');
+          $('#table' + category).width('100%');
+          $('#tableNotInCategory').width('100%');
+        }
+        $('#accordion').accordion({
+          autoHeight: false,
+          collapsible: true,
+          navigation: true,
+          active: false
         
-        
-        
-
-  <div id="tabs-2">
-    <form id="form_new_mp3" name="form_new_mp3">
-      <p>Name: <br /><input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200"></p> 
-      <p>URL: <br /><input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200"></p>
-      <p>Category: <br /><input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200"></p> 
-    <button onclick="chromeRadio.storage.saveMp3Url()">Save</button>
-    <div id="status"></div>
-    </form>
-  </div>
-  
-
-
-  <div id="tabs-3">
-    <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
-      Einige Seiten zum Testen der Extension:
+        });
+      });
+    </script>
+  </head>
+  <body onload="chromeRadio.storage.getRadioItems();">
+    <div id="tabs">
       <ul>
-        <li><a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a></li>
-        <li><a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a></li>
-        <li><a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a></li>
-        <li><a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a></li>
-        <li><a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a></li>
-      </ul>
-    </div>
-  </div>
-  
-  <div id="tabs-4" >
-    <div id="my-radio-player-div">
-      <audio id="my-radio-player" autoplay="true" src="" controls="controls"></audio> 
-    </div>
-    <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">Player stopped.</div>
-  </div>
-  
-  <div id="tabs-5" >
-	<h2>ChromeRadio Version 1.0</h2>
-	<p>
-		ChromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a> event in Munich, Germany.
-	</p>
-	<h2>How To Use ChromeRadio</h2>
-	<p>..
-	</p>
-	<h2>The Team</h2>
-	<p>
-		Three people worked on this initial version for ChromeRadio:
-	</p>
-	<ul>
-		<li><a href="mailto:jack@ubilix.com">Jakub ??</a></li>
-		<li><a href="mailto:dirk@dirkgomez.de">Dirk Gomez</a> - <a href="http://dirkgomez.de">Website</a></li>
-		<li><a href="mailto:lukas.zielinski@gmail.com">Lukas Zielinski</a> - <a href="http://lukaszielinski.de">Website</a></li>
-	</ul>
-	<p>
-		We would be happy to hear from you, especially if you are planning to continue developing this extension further. :)
-	</p>
-	<h2>Copyright</h2>
-	<p>
-	The code of chromeRadio is Copyright 2010 by the original authors.
-	</p><p>
-	chromeRadio is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-	</p><p>
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-	</p><p>
-	You should have received a copy of the GNU General Public License
-	along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-	</p>
-	<p>
-		<a href="gpl.txt">Click here for the license</a>
-	</p>
-  </div>
-<div>
+        <li>
+          <a href="#tabs-1">Your Library</a>
+        </li>
+        <li>
+          <a href="#tabs-2">Add MP3 files to chromeRadio</a>
+        </li>
+        <li>
+          <a href="#tabs-3">Sites for testing</a>
+        </li>
+        <li>
+          <a href="#tabs-4">Player</a>
+        </li>
+        <li>
+          <a href="#tabs-5">About</a>
+          <li>
+          </ul>
+          <div id="tabs-1">
+            <div id="searchdiv">
+              Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>-->
+            </div>
+            <div id="headerdiv">
+              <h1>These are all the music files in your library:</h1>
+            </div>
+            <h2>Here are your Files that are not in any Category:</h2>
+            <table id="tableNotInCategory" class="ui-widget ui-widget-content">
+              <thead class="ui-widget-header ">
+                <tr>
+                  <th>
+                    <a onClick="selectAll();" href="#">All</a>
+                    <a onClick="selectNone();" href="#">None</a>
+                  </th>
+                  <th>
+                    File 
+                  </th>
+                  <th>
+                    Category
+                  </th>
+                  <th>
+                    Action 
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="bodyNotInCategory">
+              </tbody>
+            </table>
+            <h2>Here are your Categories:</h2>
+            <div id="accordion">
+            </div>
+            <table class="controls_table">
+              <tr>
+                <td style="font-weight: bold;">
+                  With Selected: 
+                </td>
+                <td>
+                  <select id="action_select">
+                    <option value="delete">Delete Selected</option>
+                    <option value="movecat1">Move To Category 1</option>
+                    <option value="movecat2">Move To Category 2</option>
+                    <option value="export">Export</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="button" value="OK">
+                </td>
+                <td style="border-left: 1px solid #000;">
+                  &nbsp;Create New Category:
+                </td>
+                <td>
+                  <input type="text" id="new_cat_textfield">
+                </td>
+                <td>
+                  <input type="button" onClick="chromeRadio.storage.createNewCategory();" value="Ok">
+                  </tr>
+                </table><a href="#" onclick="chromeRadio.storage.exportLibrary(); return false;">Export Library</a>
+                <div id="div_export_textarea" style="display:none;">
+                  <h2>Export data</h2>
+                  <p>
+                    Copy and paste the textarea content 
+                    into a file and then save it.
+                  </p>
+                  <textarea id="export_textarea" name="export_textarea" cols="50" rows="10">
+                  </textarea>
+                  <a href="#" onclick="hideMe('div_export_textarea'); return false;">Done</a>
+                </div>
+                <a href="#" onclick="chromeRadio.storage.showMe('div_import_textarea'); return false;">Import Library</a>
+                <div id="div_import_textarea" style="display:none;">
+                  <h2>Import data</h2>
+                  <p>
+                    Copy and paste the textarea content 
+                    into a file and then save it.
+                  </p>
+                  <textarea id="import_textarea" name="import_textarea" cols="50" rows="10">
+                    {"0":{"mp3_url:":"http://chaosradio.ccc.de/archive/chaosradio_154.mp3","mp3_name:":"Chaosradio 154"},"1":{"mp3_url:":"http://www.garageband.com/mp3/Blinded_Colony-In_Here.mp3?|pe1|S8LTM0LdsaSkZVS0YW8","mp3_name:":"Richtiger Song"},"2":{"mp3_url:":"http://dradio.ic.llnwd.net/stream/dradio_dlf_m_a.ogg","mp3_name:":"Deutschlandradio"}}
+                  </textarea>
+                  <input type="submit" value="Import data" onclick="chromeRadio.storage.importLibrary(); return false;"><a href="#" onclick="chromeRadio.storage.hideMe('div_import_textarea'); return false;">Done</a>
+                </div>
+                </div>
+                <div id="tabs-2">
+                  <form id="form_new_mp3" name="form_new_mp3">
+                    <p>
+                      Name: 
+                      <br/>
+                      <input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200">
+                    </p>
+                    <p>
+                      URL: 
+                      <br/>
+                      <input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200">
+                    </p>
+                    <p>
+                      Category: 
+                      <br/>
+                      <input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200">
+                    </p>
+                    <button onclick="chromeRadio.storage.saveMp3Url()">
+                      Save
+                    </button>
+                    <div id="status">
+                    </div>
+                  </form>
+                </div>
+                <div id="tabs-3">
+                  <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
+                    Einige Seiten zum Testen der Extension:
+                    <ul>
+                      <li>
+                        <a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a>
+                      </li>
+                      <li>
+                        <a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a>
+                      </li>
+                      <li>
+                        <a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a>
+                      </li>
+                      <li>
+                        <a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a>
+                      </li>
+                      <li>
+                        <a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="tabs-4">
+                  <div id="my-radio-player-div">
+                    <audio id="my-radio-player" autoplay="true" src="" controls="controls">
+                    </audio>
+                  </div>
+                  <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">
+                    Player stopped.
+                  </div>
+                </div>
+                <div id="tabs-5">
+                  <h2>ChromeRadio Version 1.0</h2>
+                  <p>
+                    ChromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
+                    event in Munich, Germany.
+                  </p>
+                  <h2>How To Use ChromeRadio</h2>
+                  <p>
+                    ..
+                  </p>
+                  <h2>The Team</h2>
+                  <p>
+                    Three people worked on this initial version for ChromeRadio:
+                  </p>
+                  <ul>
+                    <li>
+                      <a href="mailto:jack@ubilix.com">Jakub ??</a>
+                    </li>
+                    <li>
+                      <a href="mailto:dirk@dirkgomez.de">Dirk Gomez</a>
+                      - <a href="http://dirkgomez.de">Website</a>
+                    </li>
+                    <li>
+                      <a href="mailto:lukas.zielinski@gmail.com">Lukas Zielinski</a>
+                      - <a href="http://lukaszielinski.de">Website</a>
+                    </li>
+                  </ul>
+                  <p>
+                    We would be happy to hear from you, especially if you are planning to continue developing this extension further. :)
+                  </p>
+                  <h2>Copyright</h2>
+                  <p>
+                    The code of chromeRadio is Copyright 2010 by the original authors.
+                  </p>
+                  <p>
+                    chromeRadio is free software: you can redistribute it and/or modify
+                    it under the terms of the GNU General Public License as published by
+                    the Free Software Foundation, either version 3 of the License, or
+                    (at your option) any later version.
+                  </p>
+                  <p>
+                    This program is distributed in the hope that it will be useful,
+                    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                    GNU General Public License for more details.
+                  </p>
+                  <p>
+                    You should have received a copy of the GNU General Public License 
+                    along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+                  </p>
+                  <p>
+                    <a href="gpl.txt">Click here for the license</a>
+                  </p>
+                </div>
+                <div>
+              </body>
+              </html>
 
-</body>
-</html>
