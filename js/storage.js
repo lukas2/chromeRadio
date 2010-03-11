@@ -151,7 +151,7 @@ chromeRadio.storage = {
     var key;
     var len = localStorage.length;
     var tunes = {};
-    var tunes_categories = {};
+    var tunes_categories = chromeRadio.storage.getAllCategories();
     var categories = {};
     var output_string = "";
     
@@ -167,11 +167,11 @@ chromeRadio.storage = {
       }
   
       if (flipcolor) {
-        output_string += chromeRadio.storage.genTable(storage_key,flipcolor);
+        output_string += chromeRadio.storage.genTable(storage_key,flipcolor,true,tunes_categories[storage_key]);
         flipcolor = false;
       }
       else {
-        output_string += chromeRadio.storage.genTable(storage_key ,flipcolor);
+        output_string += chromeRadio.storage.genTable(storage_key ,flipcolor,true,tunes_categories[storage_key]);
         flipcolor = true;
 
       }
@@ -179,11 +179,15 @@ chromeRadio.storage = {
     var my_library = document.getElementById(element);
     my_library.innerHTML = output_string;
   },
-  genTable: function(storage_key, flipcolor){
+  genTable: function(storage_key, flipcolor, withCategories, tunes_categories){
       var output_string = "<tr>" +
       '<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+storage_key +'"/></td>' +
       '<td id="'+((flipcolor)?'line1':'line2')+'"><a onclick="chromeRadio.storage.playme(this.id);return false;"'+
       'href="#" id="' + storage_key +'">' + storage_key +'</a></td>';
+    if(withCategories){
+        output_string += '<td id="'+((flipcolor)?'line1':'line2')+'"> Category: "' + tunes_categories+'</td>';        
+    }
+    
       return output_string;
   },
   playme: function(url){
