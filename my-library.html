@@ -10,20 +10,19 @@
     <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js">
     </script>
     <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-  <style type="text/css" media="screen">
-    #allNone {
-      width:20px;
-    } 
-    #line1 {
-	    background: #CCC;
-    }
-
-    #line2 {
-	    background: #EEE;
-    }
- 
-  </style>
-  
+    <style type="text/css" media="screen">
+      #allNone {
+          width: 20px;
+      }
+      
+      #line1 {
+          background: #CCC;
+      }
+      
+      #line2 {
+          background: #EEE;
+      }
+    </style>
     <script type="text/javascript">
       
       $(function(){
@@ -41,7 +40,7 @@
           $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body"></tbody></table>');
           $('#table' + category).width('100%');
           $('#' + category).css('padding', '0');
-
+          
         }
         $('#accordion').accordion({
           autoHeight: false,
@@ -56,7 +55,7 @@
         $('#allMp3s').css('padding', '0');
         $('#tableNotInCategory').width('100%');
         $('#tableAllMp3s').width('100%');
-
+        
       });
     </script>
   </head>
@@ -105,7 +104,6 @@
                   </tbody>
                 </table>
               </div>
-              
               <h3><a href="#">Not Catagorised</a></h3>
               <div id="notCatagoriesed">
                 <table id="tableNotInCategory" class="ui-widget ui-widget-content">
@@ -145,118 +143,119 @@
                 </td>
                 <td>
                   <input type="button" onClick="chromeRadio.storage.createNewCategory();" value="Ok">
-                  </tr>
-                </table>
-                <div id="tabs-2">
-                  <form id="form_new_mp3" name="form_new_mp3">
-                    <p>
-                      Name: 
-                      <br/>
-                      <input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200">
-                    </p>
-                    <p>
-                      URL: 
-                      <br/>
-                      <input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200">
-                    </p>
-                    <p>
-                      Category: 
-                      <br/>
-                      <input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200">
-                    </p>
-                    <button onclick="chromeRadio.storage.saveMp3Url()">
-                      Save
-                    </button>
-                    <div id="status">
-                    </div>
-                  </form>
-                </div>
-                <div id="tabs-3">
-                  <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
-                    Einige Seiten zum Testen der Extension:
-                    <ul>
-                      <li>
-                        <a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a>
-                      </li>
-                      <li>
-                        <a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a>
-                      </li>
-                      <li>
-                        <a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a>
-                      </li>
-                      <li>
-                        <a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a>
-                      </li>
-                      <li>
-                        <a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div id="tabs-4">
-                  <div id="my-radio-player-div">
-                    <audio id="my-radio-player" autoplay="true" src="" controls="controls">
-                    </audio>
-                  </div>
-                  <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">
-                    Player stopped.
-                  </div>
-                </div>
-                <div id="tabs-5">
-                  <h2>ChromeRadio Version 1.0</h2>
-                  <p>
-                    ChromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
-                    event in Munich, Germany.
-                  </p>
-                  <h2>How To Use ChromeRadio</h2>
-                  <p>
-                    ..
-                  </p>
-                  <h2>The Team</h2>
-                  <p>
-                    Three people worked on this initial version for ChromeRadio:
-                  </p>
-                  <ul>
-                    <li>
-                      <a href="mailto:jack@ubilix.com">Jakub ??</a>
-                    </li>
-                    <li>
-                      <a href="mailto:dirk@dirkgomez.de">Dirk Gomez</a>
-                      - <a href="http://dirkgomez.de">Website</a>
-                    </li>
-                    <li>
-                      <a href="mailto:lukas.zielinski@gmail.com">Lukas Zielinski</a>
-                      - <a href="http://lukaszielinski.de">Website</a>
-                    </li>
-                  </ul>
-                  <p>
-                    We would be happy to hear from you, especially if you are planning to continue developing this extension further. :)
-                  </p>
-                  <h2>Copyright</h2>
-                  <p>
-                    The code of chromeRadio is Copyright 2010 by the original authors.
-                  </p>
-                  <p>
-                    chromeRadio is free software: you can redistribute it and/or modify
-                    it under the terms of the GNU General Public License as published by
-                    the Free Software Foundation, either version 3 of the License, or
-                    (at your option) any later version.
-                  </p>
-                  <p>
-                    This program is distributed in the hope that it will be useful,
-                    but WITHOUT ANY WARRANTY; without even the implied warranty of
-                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                    GNU General Public License for more details.
-                  </p>
-                  <p>
-                    You should have received a copy of the GNU General Public License 
-                    along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
-                  </p>
-                  <p>
-                    <a href="gpl.txt">Click here for the license</a>
-                  </p>
-                </div>
-                <div>
-                </body>
-              </html>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div id="tabs-2">
+            <form id="form_new_mp3" name="form_new_mp3">
+              <p>
+                Name: 
+                <br/>
+                <input type="text" name="mp3_name" id="mp3_name" size="100" maxlength="200">
+              </p>
+              <p>
+                URL: 
+                <br/>
+                <input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200">
+              </p>
+              <p>
+                Category: 
+                <br/>
+                <input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200">
+              </p>
+              <button onclick="chromeRadio.storage.saveMp3Url()">
+                Save
+              </button>
+              <div id="status">
+              </div>
+            </form>
+          </div>
+          <div id="tabs-3">
+            <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
+              Einige Seiten zum Testen der Extension:
+              <ul>
+                <li>
+                  <a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a>
+                </li>
+                <li>
+                  <a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a>
+                </li>
+                <li>
+                  <a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a>
+                </li>
+                <li>
+                  <a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a>
+                </li>
+                <li>
+                  <a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div id="tabs-4">
+            <div id="my-radio-player-div">
+              <audio id="my-radio-player" autoplay="true" src="" controls="controls">
+              </audio>
+            </div>
+            <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">
+              Player stopped.
+            </div>
+          </div>
+          <div id="tabs-5">
+            <h2>ChromeRadio Version 1.0</h2>
+            <p>
+              ChromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
+              event in Munich, Germany.
+            </p>
+            <h2>How To Use ChromeRadio</h2>
+            <p>
+              ..
+            </p>
+            <h2>The Team</h2>
+            <p>
+              Three people worked on this initial version for ChromeRadio:
+            </p>
+            <ul>
+              <li>
+                <a href="mailto:jack@ubilix.com">Jakub ??</a>
+              </li>
+              <li>
+                <a href="mailto:dirk@dirkgomez.de">Dirk Gomez</a>
+                - <a href="http://dirkgomez.de">Website</a>
+              </li>
+              <li>
+                <a href="mailto:lukas.zielinski@gmail.com">Lukas Zielinski</a>
+                - <a href="http://lukaszielinski.de">Website</a>
+              </li>
+            </ul>
+            <p>
+              We would be happy to hear from you, especially if you are planning to continue developing this extension further. :)
+            </p>
+            <h2>Copyright</h2>
+            <p>
+              The code of chromeRadio is Copyright 2010 by the original authors.
+            </p>
+            <p>
+              chromeRadio is free software: you can redistribute it and/or modify
+              it under the terms of the GNU General Public License as published by
+              the Free Software Foundation, either version 3 of the License, or
+              (at your option) any later version.
+            </p>
+            <p>
+              This program is distributed in the hope that it will be useful,
+              but WITHOUT ANY WARRANTY; without even the implied warranty of
+              MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+              GNU General Public License for more details.
+            </p>
+            <p>
+              You should have received a copy of the GNU General Public License 
+              along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+            </p>
+            <p>
+              <a href="gpl.txt">Click here for the license</a>
+            </p>
+          </div>
+        </body>
+        </html>
 
