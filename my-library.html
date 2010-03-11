@@ -22,13 +22,17 @@
       $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
       $('#accordion').append('<div id="'+category+'"></div>');
       $('#'+category).append('<table id="table'+category+'" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="'+category+'Body"></tbody></table>');
-      
+        $('#table'+category).width('100%');
+        $('#tableNotInCategory').width('100%');
     }
-    $("#accordion").accordion({
+    $('#accordion').accordion({
  			autoHeight: false,
+      collapsible: true,
 			navigation: true
     });
   });
+
+
 </script>
 </head>
 <body onload="chromeRadio.storage.getRadioItems();">
@@ -46,9 +50,27 @@
   <div id="tabs-1" >
 	<div id="searchdiv">Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>--></div>
     <div id="headerdiv"><h1>These are all the music files in your library:</h1></div>
-
-<table id="tableNotInList" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="bodyNotInList"></tbody></table>
-
+<table id="tableNotInCategory" class="ui-widget ui-widget-content">
+    <thead class="ui-widget-header ">
+        <tr>
+            <th>
+                <a onClick="selectAll();" href="#">All</a>
+                <a onClick="selectNone();" href="#">None</a>
+            </th>
+            <th>
+                File 
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Action 
+            </th>
+        </tr>
+    </thead>
+    <tbody id="bodyNotInCategory">
+    </tbody>
+</table>
   <div id="accordion"></div>
 		<table class="controls_table">
 	

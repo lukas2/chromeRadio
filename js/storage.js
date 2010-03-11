@@ -129,7 +129,7 @@ chromeRadio.storage = {
                 }
             }
         }
-        var my_library = document.getElementById("bodyNotInList");
+        var my_library = document.getElementById("bodyNotInCategory");
         my_library.innerHTML = output_string;  
 
 
