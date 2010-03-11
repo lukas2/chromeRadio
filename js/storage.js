@@ -180,6 +180,7 @@ chromeRadio.storage = {
     var tunes_categories = chromeRadio.storage.getAllCategories();
     var categories = {};
     var output_string = "";
+    var storage_key;
     
     var flipcolor = false;
     var element ="";
@@ -190,16 +191,15 @@ chromeRadio.storage = {
         storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
         tunes[storage_key] = localStorage.getItem(key);
         element = "bodyAllMp3s";
-      }
-  
-      if (flipcolor) {
-        output_string += chromeRadio.storage.genTable(storage_key,flipcolor,true,tunes_categories[storage_key]);
-        flipcolor = false;
-      }
-      else {
-        output_string += chromeRadio.storage.genTable(storage_key ,flipcolor,true,tunes_categories[storage_key]);
-        flipcolor = true;
+        if (flipcolor) {
+          output_string += chromeRadio.storage.genTable(storage_key,flipcolor,true,tunes_categories[storage_key]);
+          flipcolor = false;
+        }
+        else {
+          output_string += chromeRadio.storage.genTable(storage_key ,flipcolor,true,tunes_categories[storage_key]);
+          flipcolor = true;
 
+        }
       }
     }
     var my_library = document.getElementById(element);
