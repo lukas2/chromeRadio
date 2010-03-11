@@ -164,8 +164,7 @@ chromeRadio.storage = {
         storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
         tunes[storage_key] = localStorage.getItem(key);
         element = "bodyAllMp3s";
-      }
-      if(key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.)  
+      } 
       if (flipcolor) {
         output_string += chromeRadio.storage.genTable(storage_key,flipcolor);
         flipcolor = false;
