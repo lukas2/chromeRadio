@@ -146,13 +146,7 @@ chromeRadio.storage = {
           storage_key +
           "\"> " +
           tunes[storage_key] +
-          "</a></td>" +
-          "<td class=\"line1\"> Category: " +
-          tunes_categories[storage_key] +
-          "</td><td class=\"line1\"><a onclick=\"chromeRadio.storage.deleteme(this.id);return false;\" href=\"#\" id=\"" +
-          storage_key +
-          "\">delete me</a></td>" +
-          "</tr>";
+          "</a></td>";
           
           flipcolor = false;
         }
@@ -165,13 +159,7 @@ chromeRadio.storage = {
           storage_key +
           "\"> " +
           tunes[storage_key] +
-          "</a></td>" +
-          "<td class=\"line2\"> Category: " +
-          tunes_categories[storage_key] +
-          "</td><td class=\"line2\"><a onclick=\"chromeRadio.storage.deleteme(this.id);return false;\" href=\"#\" id=\"" +
-          storage_key +
-          "\">delete me</a></td>" +
-          "</tr>";
+          "</a></td>";
           flipcolor = true;
         }
       }

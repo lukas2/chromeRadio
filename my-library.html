@@ -24,9 +24,10 @@
             continue;
           $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
           $('#accordion').append('<div id="' + category + '"></div>');
-          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th> <th> Category </th> <th> Action </th> </tr></thead><tbody id="' + category + 'Body"></tbody></table>');
+          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNoneCat"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body"></tbody></table>');
           $('#table' + category).width('100%');
           $('#tableNotInCategory').width('100%');
+          $('#allNoneCat').width('20px');
         }
         $('#accordion').accordion({
           autoHeight: false,
@@ -36,6 +37,8 @@
         
         });
       });
+    $(function(){$('#allNone').width('20px');});
+ 
     </script>
   </head>
   <body onload="chromeRadio.storage.initializeEverything();">
@@ -68,18 +71,12 @@
             <table id="tableNotInCategory" class="ui-widget ui-widget-content">
               <thead class="ui-widget-header ">
                 <tr>
-                  <th>
+                  <th id="allNone">
                     <a onClick="selectAll();" href="#">All</a>
                     <a onClick="selectNone();" href="#">None</a>
                   </th>
                   <th>
                     File 
-                  </th>
-                  <th>
-                    Category
-                  </th>
-                  <th>
-                    Action 
                   </th>
                 </tr>
               </thead>
