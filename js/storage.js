@@ -112,7 +112,36 @@ chromeRadio.storage = {
       var selvalue = selectfield.options[selindex].value
 	  
 	  
-  }
+	  if(selvalue == "act_export")
+	  {
+		chromeRadio.storage.exportLibrary(); return false;
+	  }
+	  else if(selvalue == "act_import")
+	  {
+		chromeRadio.storage.showMe('div_import_textarea'); return false;
+	  }
+	  else if(selvalue == "act_nop")
+	  {
+		//do nothing at all
+	  }
+	  else if(selvalue == "act_delete")
+	  {
+	  
+	  }
+	  else if(selvalue.indexOf("cat_") == 0)
+	  {
+		// move to category
+		var catname = selvalue.substirng(4,selvalue.length);
+		
+		// HERE SOME MOVE-CODE
+		
+		
+		// refresh page
+		window.location.reload();
+		
+	  }
+  
+  },
   
   /** 
    * GET ITEMS FROM LIBRARY AND DISPLAY THEM
