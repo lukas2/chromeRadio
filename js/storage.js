@@ -304,7 +304,7 @@ chromeRadio.storage = {
     var my_radio_player = document.getElementById("my-radio-player");
     var my_radio_player_current_url = document.getElementById("my-radio-player-current-url");
     
-    my_radio_player_current_url.innerHTML = "Currently playing: " + url;
+    my_radio_player_current_url.innerHTML = "File: " + url;
     
     my_radio_player.setAttribute('src', url);
     my_radio_player.setAttribute('currentSrc', url);

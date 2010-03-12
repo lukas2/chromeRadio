@@ -72,12 +72,50 @@
       #line2 {
           background: #EEE;
       }
+	  
+	  #player-wrapper
+	  {
+		background: #dbedf9;
+		border: 1px solid #CCC;
+		padding:5px;
+		margin-top:5px;
+		height: 32px;
+	  }
+	  #my-radio-player-div
+	  {
+		float:left;
+		padding-right: 10px;
+	  }
+	  #my-radio-player-current-url
+	  {
+		font-size: 18px;
+		font-family: sans-serif;
+	  }
     </style>
     <script type="text/javascript">
       
+	  function showAboutDialog()
+	  {
+		$("#about-dialog").dialog('open');
+	  }
+	  
+	  function showAddFileDialog()
+	  {
+		$("#add-file-dialog").dialog('open');
+	  }
+	  
       $(function(){
         $("#tabs").tabs();
       });
+	  
+	  $(function(){
+		$("#about-dialog").dialog({autoOpen:false});
+		$("#about-dialog").dialog({ width: "90%" });
+		$("#add-file-dialog").dialog({autoOpen:false});
+		$("#add-file-dialog").dialog({ width: "760px" });
+	  });	
+
+	  
       $(function(){
         categories = chromeRadio.storage.getAllCategories();
         console.log(categories)
@@ -113,24 +151,15 @@
     </script>
   </head>
   <body onload="chromeRadio.storage.initializeEverything();">
+
     <div id="tabs">
       <ul>
         <li>
           <a href="#tabs-1">Your Library</a>
         </li>
-        <li>
-          <a href="#tabs-2">Add MP3 files to chromeRadio</a>
-        </li>
-        <li>
-          <a href="#tabs-3">Sites for testing</a>
-        </li>
-        <li>
-          <a href="#tabs-4">Player</a>
-        </li>
-        <li>
-          <a href="#tabs-5">About</a>
-          <li>
-          </ul>
+      </ul>
+	  
+	  
           <div id="tabs-1">
             <div id="searchdiv">
               Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>-->
@@ -203,8 +232,25 @@
               </tr>
             </table>
           </div>
-          <div id="tabs-2">
-            <form id="form_new_mp3" name="form_new_mp3">
+
+          
+		  </div>
+		  
+		  <div id="player-wrapper">
+		    <div id="my-radio-player-div">
+              <audio id="my-radio-player" autoplay="true" src="" controls="controls">
+              </audio>
+            </div>
+            <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">
+              Player stopped.
+            </div>
+		  </div>
+		  
+		  <a href="#" onClick="showAboutDialog();">About</a>
+		  <a href="#" onClick="showAddFileDialog();">Add File</a>
+		  
+		  <div id="add-file-dialog" title="Add file">
+ <form id="form_new_mp3" name="form_new_mp3">
               <p>
                 Name: 
                 <br/>
@@ -225,40 +271,10 @@
               </button>
               <div id="status">
               </div>
-            </form>
-          </div>
-          <div id="tabs-3">
-            <div id="testing_sites" style="background: #EEE; margin: 10px 2px; padding:5px; border: 1px solid #000;">
-              Einige Seiten zum Testen der Extension:
-              <ul>
-                <li>
-                  <a href="http://www.somewhereoutwest.com/catalogue-empty.html">http://www.somewhereoutwest.com/catalogue-empty.html (overkill an mp3s und oggs)</a>
-                </li>
-                <li>
-                  <a href="http://www.keithandthegirl.com/Show-Notes-Pictures.aspx">http://www.keithandthegirl.com/Show-Notes-Pictures.aspx (10 mp3s)</a>
-                </li>
-                <li>
-                  <a href="http://www.dradio.de/">http://www.dradio.de/ (4 mp3s, hat auch .ogg)</a>
-                </li>
-                <li>
-                  <a href="http://prettymuchamazing.com/">http://prettymuchamazing.com/ (einige mp3s, Musik-Blog)</a>
-                </li>
-                <li>
-                  <a href="http://youlooknicetoday.com/">http://youlooknicetoday.com/ (10 mp3s)</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div id="tabs-4">
-            <div id="my-radio-player-div">
-              <audio id="my-radio-player" autoplay="true" src="" controls="controls">
-              </audio>
-            </div>
-            <div id="my-radio-player-current-url" style="font-weight: normal; margin-top:5px;">
-              Player stopped.
-            </div>
-          </div>
-          <div id="tabs-5">
+            </form>		  
+		  </div>
+		  
+		  <div id="about-dialog"  title="About chromeRadio">
             <h2>chromeRadio Version 1.0</h2>
             <p>
               chromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
@@ -330,6 +346,7 @@
               <a href="gpl.txt">Click here for the license</a>
             </p>
           </div>
+		  
         </body>
         </html>
 
