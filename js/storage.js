@@ -146,23 +146,35 @@ chromeRadio.storage = {
 	  }
 	  else 
 	  {
-        var categories = getAllCategories();
+        //var categories = chromeRadio.storage.getAllCategories();
 		// move to category
+	    if(selvalue.indexOf("cat_") == 0){
+		    //move to selvalue to secified category
+		    var newcat = selvalue.substring(4,selvalue.length);
+			for(var i = 0; i < selectedCheckboxes.length; i++)
+		    {
+				var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
+				
+				var file = chromeRadio.storage.getItem(chromeRadio.storage.categoryPrefix + url);
+				alert("URL: "+url+", FILE:"+file);
+				chromeRadio.storage.deleteme(url);
+				chromeRadio.storage.saveFile(url,url,newcat);
+			}
+		}		
+		
         for(category in categories){
-	        if(selvalue.indexOf(category) == 0){
-		        //move to selvalue to secified category
-		    }
+
         }
         
 		
 		// HERE SOME MOVE-CODE
 		
-		
-		// refresh page
-		window.location.reload();
-		
+
 	  }
   
+  		// refresh page
+		window.location.reload();
+		
   },
   
   /**
@@ -184,7 +196,6 @@ chromeRadio.storage = {
 			}		
 		}
 	}
-	
 	return checkboxes;
   },
   
