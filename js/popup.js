@@ -39,17 +39,12 @@ function play(ref){
 
 
 function updateList(){
-  
-  target.innerHTML = "";
-  
-  var bgLinks = chrome.extension.getBackgroundPage().links;
-  
-  var currentPageLinks = bgLinks.length;
-  
-  insert = "";
+    var bgLinks = chrome.extension.getBackgroundPage().links;
+    console.log(bgLinks);
+    var currentPageLinks = bgLinks.length;
   
   for (i = 0; i < bgLinks.length; i++) {
-    // check if that mp3 is already in library and decide whether to show add-button
+    // check if that url is already in library and decide whether to show add-button
     
     if (chrome.extension.getBackgroundPage().mp3IsInLibrary(bgLinks[i].href) == true) {
       if (showHREFs) {
