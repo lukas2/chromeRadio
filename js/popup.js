@@ -39,7 +39,6 @@ function play(ref){
 
 
 function updateList(){
-  var target = document.getElementById("links_found");
   
   target.innerHTML = "";
   
@@ -71,6 +70,7 @@ function updateList(){
     }
   }
   
-  target.innerHTML = insert;
+  $('#links_found').append(insert);
+	
 }
 
