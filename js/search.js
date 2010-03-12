@@ -5,13 +5,13 @@ if (!chromeRadio.search)
 }
 
 chromeRadio.search = {
-    search: function() {
-		var tab = document.getElementsByClassName("library_table")[0];
+    search: function(tabid,text) {
+		var tab = document.getElementById("table_cat_body_"+tabid);
 		var trs = tab.getElementsByTagName("tr");
-		var searchquery = document.getElementById("search_text_field").value;
+		var searchquery = text
 		
 		// first display all
-		for (var h = 1; h < trs.length; h++)
+		for (var h = 0; h < trs.length; h++)
 		{
 			trs[h].style.display = "";
 		}
@@ -19,8 +19,7 @@ chromeRadio.search = {
 		var flipstyle = false;
 		
 		// now hide all that don't match search criterium
-		// start with 1 so we don't hide the header row
-		for (var i = 1; i < trs.length; i++)
+		for (var i = 0; i < trs.length; i++)
 		{
 			var url = trs[i].childNodes[1].childNodes[0].id.toLowerCase();
 			var text = trs[i].childNodes[1].childNodes[0].innerText.toLowerCase();

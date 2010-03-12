@@ -4,33 +4,122 @@ if (!chromeRadio.storage)
   chromeRadio.storage = {};
 
 chromeRadio.storage = {
-  urlPrefix: "chromeRadioURL:",
-  namePrefix: "chromeRadioName:",
-  categoryPrefix: "chromeRadioCat:",
+  urlPrefix: "chromeRadioURL:", /* URL -> CAT */
+  namePrefix: "chromeRadioName:", /* URL -> NAME */
+  categoryPrefix: "chromeRadioCat:", /* CAT -> 0 */
 
+  setItem: function(key, value){
+    try {
+      window.localStorage.removeItem(key);
+      window.localStorage.setItem(key, value);
+    } 
+    catch (e) {
+    }
+  },
+  
+  getItem: function(key){
+    var value;
+    try {
+      value = window.localStorage.getItem(key);
+    } 
+    catch (e) {
+      value = "null";
+    }
+    return value;
+  },
+    
+  setValue: function(prefix,key,value)
+  {
+	chromeRadio.storage.setItem(prefix+key,value);
+  },
+  
+  getValue: function(prefix,key)
+  {
+	return chromeRadio.storage.getItem(prefix+key);
+  },
+  
+  getURL: function(url)
+  {
+	return chromeRadio.storage.getValue(chromeRadio.storage.urlPrefix,url);
+  },
+  
+  getAllValuesForPrefix: function(prefix)
+  {
+	var len = localStorage.length;
+	var result = new Array();
+	
+	for(var i = 0; i < len; i++)
+	{
+		key = localStorage.key(i);
+		if(key.indexOf(prefix) == 0)
+		{
+			
+			var pair = new Array();
+			pair['key'] = key;
+			pair['value'] = chromeRadio.storage.getValue(prefix,key.substring(prefix.length));
+			result.push(pair);
+		}
+	}
+	return result;
+  },
+  
+  storeNewFile: function (url,text)
+  {
+	var urlPrefix = chromeRadio.storage.urlPrefix;
+	var namePrefix = chromeRadio.storage.namePrefix;
+	//store url
+	chromeRadio.storage.setValue(urlPrefix, url, '0'); //no category
+	chromeRadio.storage.setValue(namePrefix, url, text);
+  },
+  
+  storeNewFileToCategory: function (url,text,category)
+  {
+	var urlPrefix = chromeRadio.storage.urlPrefix;
+	var namePrefix = chromeRadio.storage.namePrefix;
+
+	//store url
+	chromeRadio.storage.setValue(urlPrefix, url, category); //no category
+	chromeRadio.storage.setValue(namePrefix, url, text);    
+  },
+  
+  createNewCategoryInDB: function(category)
+  {
+	var catPrefix = chromeRadio.storage.categoryPrefix;
+	chromeRadio.storage.setValue(catPrefix,category,"0");
+  },
+  
+  getTextForUrl: function(url)
+  {
+	return chromeRadio.storage.getValue(chromeRadio.storage.namePrefix,url);
+  },
+  
+  deleteCategoryInDB: function(category)
+  {
+	window.localStorage.removeItem(chromeRadio.storage.categoryPrefix + category);
+  },
+  
+  
   /** get all URLs that belong to a particular category
    *  params  category name of the category
    *  returns unordered array of urls
   */
   getAllUrlsInCategory: function(category){
-	//var urls = {};
+	
 	var urls = new Array();
-	var i = -1;
 	var len = localStorage.length;
-	while (++i < len) 
+	
+	for(var i = 0; i < len; i++)
 	{
-	    key = localStorage.key(i);
-	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) 
+		key = localStorage.key(i);
+		
+		if(key.indexOf(chromeRadio.storage.urlPrefix) == 0)
 		{
-			storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
-			var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
-			//urls[storage_key] = category_name;
-			if(category_name == category && storage_key != category_name)
+			value = chromeRadio.storage.getValue(chromeRadio.storage.urlPrefix,key.substring(chromeRadio.storage.urlPrefix.length));
+			if ( value == category)
 			{
-				urls.push(storage_key);
-			}
+				urls.push(key.substring(chromeRadio.storage.urlPrefix.length));
+			}			
 		}
-
 	}
 	return urls;
   },
@@ -65,7 +154,7 @@ chromeRadio.storage = {
 	
 	if(category == null)
 	{
-		var urls = chromeRadio.storage.getAllUrls();
+		var urls = chromeRadio.storage.getAllUrlsInCategory("0");
 	}
 	else
 	{
@@ -96,6 +185,8 @@ chromeRadio.storage = {
    *  returns unordered assoc array of categories
   */
   getAllCategories: function(){
+  
+    /*
     var categories = {};
     var i = -1;
     var len = localStorage.length;
@@ -106,7 +197,16 @@ chromeRadio.storage = {
         var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key)
         categories[category_name] = category_name;
       }
-    }
+    }*/
+	
+	var categories = new Array();
+	var cats = chromeRadio.storage.getAllValuesForPrefix(chromeRadio.storage.categoryPrefix);
+	
+	for(var i = 0; i < cats.length; i++)
+	{
+		categories.push(cats[i]['key'].substring(chromeRadio.storage.categoryPrefix.length));
+		//console.log(cats[i]['key'].substring(chromeRadio.storage.categoryPrefix.length));
+	}
     return categories;
   },
   
@@ -116,10 +216,36 @@ chromeRadio.storage = {
   */
   createNewCategory: function(){
     var category_field = document.getElementById("new_cat_textfield");
-    chromeRadio.storage.saveCategory(category_field.value);
-    //chromeRadio.storage.getRadioItems();
-    // refresh page
+	var category = category_field.value;
+
+	
+	if(category == "") return;
+	
+	chromeRadio.storage.createNewCategoryInDB(category);
     window.location.reload();
+  },
+  
+  deleteCategory: function()
+  {
+  
+    var selectfield = document.getElementById("action_select_2");
+    var selindex  = selectfield.selectedIndex
+    var selvalue = selectfield.options[selindex].value
+	
+	var category = selvalue.substring("delcat_".length);
+	var allInCat = chromeRadio.storage.getAllUrlsInCategory(category);
+	
+	for(var i = 0; i < allInCat.length; i++)
+	{
+		//set all affected URLs back to category 0
+		var currentUrl = allInCat[i];
+		var currentUrlText = chromeRadio.storage.getTextForUrl(currentUrl);
+		chromeRadio.storage.storeNewFileToCategory(currentUrl, currentUrlText, "0");
+	}
+	
+	chromeRadio.storage.deleteCategoryInDB(category);
+	window.location.reload();
+	
   },
   
   /** saves a category
@@ -141,8 +267,10 @@ chromeRadio.storage = {
   */
   saveUrl: function(url,name,category)
   {
-    chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + url, name);
-    chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + url, category); 
+    //chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + url, name);
+    //chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + url, category); 
+	
+	chromeRadio.storage.storeNewFileToCategory(url,name,category);
 
     // Update status to let user know options were saved.
     /*var status = document.getElementById("status");
@@ -156,30 +284,12 @@ chromeRadio.storage = {
   saveMp3Url: function(){
     var this_name = document.form_new_mp3.mp3_name.value;
     var this_url = document.form_new_mp3.mp3_url.value;
-    var this_category = document.form_new_mp3.mp3_category.value;
-    chromeRadio.storage.saveUrl(this_url, this_name, this_category);
+    //var this_category = document.form_new_mp3.mp3_category.value;
+    //chromeRadio.storage.saveUrl(this_url, this_name, this_category);
+	chromeRadio.storage.storeNewFile(this_url,this_name);
   },
   
-  setItem: function(key, value){
-    try {
-      window.localStorage.removeItem(key);
-      window.localStorage.setItem(key, value);
-    } 
-    catch (e) {
-    }
-  },
-  
-  getItem: function(key){
-    var value;
-    try {
-      value = window.localStorage.getItem(key);
-    } 
-    catch (e) {
-      value = "null";
-    }
-    return value;
-  },
-  
+
   /**
    * THIS IS CALLED WHEN MY-LIBRARY LOADS 
    * 2 TASKS: GET ITEMS AND GET PULL-DOWN MENU
@@ -196,19 +306,25 @@ chromeRadio.storage = {
   getControls: function()
   {
       var target = document.getElementById("action_select");
+	  var target2 = document.getElementById("action_select_2");
       
       categories = chromeRadio.storage.getAllCategories();
       var insert="";
+	  var insert2="";
       insert+="<option value=\"act_delete\">Delete Selected</option>";
       insert+="<option value=\"act_nop\">----</option>";
-      for (category in categories) {
-	  insert+="<option value=\"cat_"+category+"\">Move to Category \""+category+"\"</option>";
+      for (var i = 0; i < categories.length; i++)
+	  {//category in categories) {
+		  category = categories[i];
+		  insert+="<option value=\"cat_"+category+"\">Move to Category \""+category+"\"</option>";
+		  insert2+="<option value=\"delcat_"+category+"\">Delete Category \""+category+"\"</option>";
       }
       insert+="<option value=\"act_nop\">----</option>";
       insert+="<option value=\"act_export\">Export Library</option>";
       insert+="<option value=\"act_import\">Import Library</option>";
       
       target.innerHTML = insert;
+	  target2.innerHTML = insert2;
   },
   
   /** 
@@ -244,7 +360,6 @@ chromeRadio.storage = {
 	      }
 	  else 
 	      {
-		  //var categories = chromeRadio.storage.getAllCategories();
 			// move to category
 			if(selvalue.indexOf("cat_") == 0)
 			{
@@ -254,10 +369,10 @@ chromeRadio.storage = {
 				for(var i = 0; i < selectedCheckboxes.length; i++)
 				{
 					var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
-					var file = chromeRadio.storage.getItem(chromeRadio.storage.categoryPrefix + url);
-					//alert("URL: "+url+", FILE:"+file +"NEWCAT: "+newcat);
-					//chromeRadio.storage.deleteme(url);
-					chromeRadio.storage.saveUrl(url,url,newcat);
+					var file = chromeRadio.storage.getURL(url);
+					var text = chromeRadio.storage.getTextForUrl(url);				
+					chromeRadio.storage.storeNewFileToCategory(url, text, newcat);
+
 				}
 			}		
 
@@ -312,43 +427,6 @@ chromeRadio.storage = {
 
 	},
 
-  /** 
-   * GET ITEMS FROM LIBRARY AND DISPLAY THEM
-   */
-   /*
-  getRadioItems: function(){
-    var i = -1;
-    var key;
-    var len = localStorage.length;
-    var tunes = {};
-    var tunes_categories = chromeRadio.storage.getAllCategories();
-    var categories = {};
-    var output_string = "";
-    var storage_key;
-    
-    var flipcolor = false;
-    var element ="";
-    
-    while (++i < len) {
-      key = localStorage.key(i);
-      if (key.substring(0, chromeRadio.storage.urlPrefix.length) == chromeRadio.storage.urlPrefix) {
-        storage_key = key.substring(chromeRadio.storage.urlPrefix.length);
-        tunes[storage_key] = localStorage.getItem(key);
-        element = "bodyAllMp3s";
-        if (flipcolor) {
-          output_string += chromeRadio.storage.genTable(storage_key,flipcolor,true,tunes_categories[storage_key]);
-          flipcolor = false;
-        }
-        else {
-          output_string += chromeRadio.storage.genTable(storage_key ,flipcolor,true,tunes_categories[storage_key]);
-          flipcolor = true;
-
-        }
-      }
-    }
-    var my_library = document.getElementById(element);
-    my_library.innerHTML = output_string;
-  },*/
   genTable: function(storage_key, flipcolor, withCategories, tunes_categories){
       var output_string = "<tr>" +
       '<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+storage_key +'"/></td>' +
@@ -364,6 +442,8 @@ chromeRadio.storage = {
     var my_radio_player = document.getElementById("my-radio-player");
     var my_radio_player_current_url = document.getElementById("my-radio-player-current-url");
     
+	//alert(my_radio_player);
+	
     my_radio_player_current_url.innerHTML = "File: " + url;
     
     my_radio_player.setAttribute('src', url);
@@ -436,8 +516,8 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
 });
 
 // SELECT ALL CHECKBOXES IN LIBRARY
-function selectAll(){
-  var boxes = document.getElementById('bodyAllMp3s').getElementsByTagName('input');
+function selectAll(whichtable){
+  var boxes = document.getElementById('table_cat_body_'+whichtable).getElementsByTagName('input');
   
   for (var i = 0; i < boxes.length; i++) {
     boxes[i].checked = true;
@@ -445,8 +525,8 @@ function selectAll(){
 }
 
 // UN-SELECT ALL CHECKBOXES IN LIBRARY
-function selectNone(){
-  var boxes = document.getElementById('bodyAllMp3s').getElementsByTagName('input');
+function selectNone(whichtable){
+  var boxes = document.getElementById('table_cat_body_'+whichtable).getElementsByTagName('input');
   for (var i = 0; i < boxes.length; i++) {
     boxes[i].checked = false;
   }

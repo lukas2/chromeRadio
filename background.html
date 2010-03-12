@@ -62,14 +62,17 @@
   function addToLibrary(href, text){
     //(chromeRadio.urlPrefix+href, text);
     //setItem(chromeRadio.storage.urlPrefix + href, text);
-    chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + href, text);
+    //chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + href, text);
+	chromeRadio.storage.storeNewFile(href,text);
     
   }
   
   // check for popup.html if given mp3 already is in local storage.
   function mp3IsInLibrary(href){
     console.log("checking: " + href);
-    if (chromeRadio.storage.getItem(chromeRadio.storage.urlPrefix + href) != null) {
+    //if (chromeRadio.storage.getItem(chromeRadio.storage.urlPrefix + href) != null) {
+	if(chromeRadio.storage.getURL(href) != null)
+	{
       return true;
     }
     else {

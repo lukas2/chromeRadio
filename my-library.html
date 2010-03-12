@@ -29,10 +29,10 @@
 		padding: 3px;
 	}
 
-	#searchdiv
+	.search_div
 	{
 		float: right;
-		background: #EEE;
+		background: #dbedf9;
 		margin-bottom: 10px;
 		border: 1px solid #CCC;
 		padding: 3px;
@@ -40,27 +40,7 @@
 		font-weight: bold;
 	}	
 	
-	
-	#accordion table
-	{
-		width: 100%;
-		margin: 0;
-		border-collapse: 0;
-		border-spacing: 0;
-		border: 1px solid #777;
-		border-bottom: none;
-	}
 
-	#accordion table tr td
-	{
-		padding-left: 5px;
-		padding-right: 5px;
-		border-bottom: 1px solid #777;
-		padding-top: 3px;
-		padding-bottom: 3px;
-	}
-
-	
       #allNone {
           width: 20px;
       }
@@ -72,6 +52,14 @@
       #line2 {
           background: #EEE;
       }
+	  
+	  #controls_table_wrapper
+	  {
+		background: #dbedf9;
+		border: 1px solid #CCC;
+		width: 100%;
+		margin-top:5px;
+	  }
 	  
 	  #player-wrapper
 	  {
@@ -92,6 +80,19 @@
 		font-size: 18px;
 		font-family: sans-serif;
 	  }
+	  
+	  table
+	  {
+	    border-collapse: separate;
+		border-spacing: 0px;
+	  }
+	  
+	  table tr td
+	  {
+		padding-top: 3px;
+		padding-bottom: 3px;
+		padding-left:10px; 
+	  }
     </style>
     <script type="text/javascript">
       
@@ -105,50 +106,29 @@
 		$("#add-file-dialog").dialog('open');
 	  }
 	  
-
+	  function showManageCategoriesDialog()
+	  {
+		$("#manage-categories-dialog").dialog('open');
+	  }
+	  
 	  
 	  $(function(){
 		$("#about-dialog").dialog({autoOpen:false});
 		$("#about-dialog").dialog({ width: "90%" });
 		$("#add-file-dialog").dialog({autoOpen:false});
 		$("#add-file-dialog").dialog({ width: "760px" });
+		$("#manage-categories-dialog").dialog({autoOpen:false});
+		$("#manage-categories-dialog").dialog({ width: "760px" });
 		$("#showaboutdialoglink").button();
 		$("#showaddfiledialoglink").button();
+		$('#managecategoriesdialoglink').button();
 	  });	
-
-	  /*
-      $(function(){
-        categories = chromeRadio.storage.getAllCategories();
-        console.log(categories)
-        for (category in categories) {
-          console.log(category)
-      var allUrls = chromeRadio.storage.getAllUrlsInCategory(category);
-      console.log(allUrls);
-
-          if (category == "") 
-            continue;
-          $('#accordion').append('<h3><a href="#">' + category + '</a></h3>');
-          $('#accordion').append('<div id="' + category + '"></div>');
-          $('#' + category).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body"></tbody></table>');
-          $('#table' + category).width('100%');
-          $('#' + category).css('padding', '0');
-          
-        }
-        $('#accordion').accordion({
-          autoHeight: false,
-          collapsible: true,
-          navigation: true,
-          active: false
-        
-        });
-      });*/
 	  
 	  // TABS STATT ACCS
 	  
 	  $(function()
 	  {
-		categories = chromeRadio.storage.getAllCategories();
-		
+		var categories = chromeRadio.storage.getAllCategories();
 		var tabno = 1;
 		var tabs = document.getElementById("tabs");
 		
@@ -158,19 +138,31 @@
 		
 		// first show the tab with all files
 		
-		newTabDescriptor.innerHTML += '<li><a href="#tabs-0" title="tabs-0">All Files</a></li>';
+		newTabDescriptor.innerHTML += '<li><a href="#tabs-0" title="tabs-0">Uncategorized</a></li>';
 		
 		var newTab = document.createElement("div");
 		newTab.id = "tabs-0";
 		
 		// contents ...
-		newTab.innerHTML += '<table  id="table_cat_0" style="width:100%;"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+chromeRadio.storage.getLinksInCategory(null)+'</tbody></table>';
+		
+		var contents = chromeRadio.storage.getLinksInCategory(null);
+		if(contents.length > 0)
+		{
+			newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
+		}
+		else
+		{
+			newTab.innerHTML += 'There are no files in this category.';			
+		}
+
+
 		
 		tabs.appendChild(newTab);
 		
 		// now we go by category:
-		for (category in categories) 
+		for (var i = 0; i < categories.length; i++)//category in categories) 
 		{
+			category = categories[i];
 			// tab header:
 			newTabDescriptor.innerHTML += '<li><a href="#tabs-'+tabno+'" title="tabs-'+tabno+'">'+category+'</a></li>';
 			
@@ -178,11 +170,20 @@
 			var newTab = document.createElement("div");
 			newTab.id = "tabs-"+tabno;
 
-			newTab.innerHTML += '<table  id="table_cat_' + tabno + '" style="width:100%;"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_' + tabno + '">'+chromeRadio.storage.getLinksInCategory(category)+'</tbody></table>';
-			
-			tabs.appendChild(newTab);
-			tabno++;
-		}
+			var contents = chromeRadio.storage.getLinksInCategory(category);
+			if(contents.length > 0)
+			{
+				newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_'+tabno+'" onkeyup="chromeRadio.search.search('+tabno+',this.value);"</div><table  id="table_cat_' + tabno + '" style="width:100%;">  <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll('+tabno+');" href="#">All</a> <a onClick="selectNone('+tabno+');" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_' + tabno + '">'+contents+'</tbody></table>';			
+			}
+			else
+			{
+				newTab.innerHTML += 'There are no files in this category.';			
+			}
+
+				
+				tabs.appendChild(newTab);
+				tabno++;
+			}
 
 	  });
 	  
@@ -203,9 +204,10 @@
   <body onload="chromeRadio.storage.initializeEverything();">
 
     <div id="tabs">
-   
     </div>
-	<table class="controls_table">
+	
+	<div id="controls_table_wrapper">
+	<table id="controls_table">
               <tr>
                 <td style="font-weight: bold;">
                   With Selected: 
@@ -217,17 +219,9 @@
                 <td>
                   <input type="button" value="OK" onClick="chromeRadio.storage.performWithSelected();">
                 </td>
-                <td style="border-left: 1px solid #000;">
-                  &nbsp;Create New Category:
-                </td>
-                <td>
-                  <input type="text" id="new_cat_textfield">
-                </td>
-                <td>
-                  <input type="button" onClick="chromeRadio.storage.createNewCategory();" value="Ok">
-                </td>
               </tr>
     </table>	  
+	</div>
     		  
 		  
 		  <div id="player-wrapper">
@@ -242,6 +236,35 @@
 		  
 		  <a id="showaboutdialoglink" href="#" onClick="showAboutDialog();">About</a>
 		  <a id="showaddfiledialoglink" href="#" onClick="showAddFileDialog();">Add File</a>
+		  <a id="managecategoriesdialoglink" href="#" onClick="showManageCategoriesDialog();">Manage Categories</a>
+		  
+		  <div id="manage-categories-dialog" title="Manage Categories">
+	<table id="controls_table">
+              <tr>
+                <td>
+                  Create New Category:
+                </td>
+                <td>
+                  <input type="text" id="new_cat_textfield">
+                </td>
+                <td>
+                  <input type="button" onClick="chromeRadio.storage.createNewCategory();" value="OK">
+                </td>
+			   </tr>
+			   <tr>
+				<td>
+					Delete Category:
+				</td>
+				<td>
+					<select id="action_select_2">
+                  </select>
+				</td>
+				<td>
+					<input type="button" onClick="chromeRadio.storage.deleteCategory();" value="OK">
+				</td>
+              </tr>
+    </table>	 		  
+		  </div>
 		  
 		  <div id="add-file-dialog" title="Add file">
  <form id="form_new_mp3" name="form_new_mp3">
@@ -254,11 +277,6 @@
                 URL: 
                 <br/>
                 <input type="text" name="mp3_url" id="mp3_url" size="100" maxlength="200">
-              </p>
-              <p>
-                Category: 
-                <br/>
-                <input type="text" name="mp3_category" id="mp3_category" size="100" maxlength="200">
               </p>
               <button onclick="chromeRadio.storage.saveMp3Url()">
                 Save
