@@ -10,22 +10,88 @@ chromeRadio.storage = {
 
   /** get all URLs that belong to a particular category
    *  params  category name of the category
-   *  returns unordered assoc array of urls
+   *  returns unordered array of urls
   */
   getAllUrlsInCategory: function(category){
-	var urls = {};
+	//var urls = {};
+	var urls = new Array();
 	var i = -1;
 	var len = localStorage.length;
-	while (++i < len) {
+	while (++i < len) 
+	{
 	    key = localStorage.key(i);
-	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) {
-		storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
-		var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
-		urls[storage_key] = category_name;
-	    }
+	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) 
+		{
+			storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
+			var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
+			//urls[storage_key] = category_name;
+			if(category_name == category && storage_key != category_name)
+			{
+				urls.push(storage_key);
+			}
+		}
+
 	}
 	return urls;
   },
+  
+  getAllUrls: function(){
+	//var urls = {};
+	var urls = new Array();
+	var i = -1;
+	var len = localStorage.length;
+	while (++i < len) 
+	{
+	    key = localStorage.key(i);
+	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) 
+		{
+			storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
+			var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
+			//urls[storage_key] = category_name;
+			if(storage_key != category_name)
+			{
+				urls.push(storage_key);
+			}
+		}
+
+	}
+	return urls;
+  },
+  
+  /* get table-formatted links for a category to display in library 
+   * input category name 
+   * return html-string
+   */
+  getLinksInCategory: function(category)
+  {
+	
+	if(category == null)
+	{
+		var urls = chromeRadio.storage.getAllUrls();
+	}
+	else
+	{
+		var urls = chromeRadio.storage.getAllUrlsInCategory(category);
+	}
+	
+	insert = "";
+	var flipcolor = true;
+	for(var i = 0; i < urls.length; i++)
+	{
+		insert+= "<tr>"+
+		'<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+urls[i] +'"/></td>'+
+		'<td id="'+((flipcolor)?'line1':'line2')+'"><a onclick="chromeRadio.storage.playme(this.id);return false;"'+
+		'href="#" id="' + urls[i] +'">' + urls[i] +'</a></td>';
+		insert += "</tr>";
+		
+		if(flipcolor) {flipcolor = false;} else {flipcolor = true;}
+	}
+      return insert;       
+  },
+  
+    
+ 
+ 
 
   /** get all stored categories
    *  params  none
@@ -81,12 +147,12 @@ chromeRadio.storage = {
     chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + url, category); 
 
     // Update status to let user know options were saved.
-    var status = document.getElementById("status");
+    /*var status = document.getElementById("status");
     status.innerHTML = "URL saved into your Library.";
     setTimeout(function(){
       status.innerHTML = "";
     }, 750);
-    getRadioItems();
+    getRadioItems();*/
   },
   
   saveMp3Url: function(){
@@ -122,7 +188,7 @@ chromeRadio.storage = {
    */
   initializeEverything: function()
   {
-      chromeRadio.storage.getRadioItems();
+      //chromeRadio.storage.getRadioItems();
       chromeRadio.storage.getControls();
   },
   
@@ -181,31 +247,26 @@ chromeRadio.storage = {
 	  else 
 	      {
 		  //var categories = chromeRadio.storage.getAllCategories();
-		// move to category
-	    if(selvalue.indexOf("cat_") == 0){
-		    //move to selvalue to secified category
-		    var newcat = selvalue.substring(4,selvalue.length);
-			for(var i = 0; i < selectedCheckboxes.length; i++)
-		    {
-				var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
+			// move to category
+			if(selvalue.indexOf("cat_") == 0)
+			{
+				//move to selvalue to secified category
+				var newcat = selvalue.substring(4,selvalue.length);
 				
-				var file = chromeRadio.storage.getItem(chromeRadio.storage.categoryPrefix + url);
-				alert("URL: "+url+", FILE:"+file);
-				chromeRadio.storage.deleteme(url);
-				chromeRadio.storage.saveUrl(url,url,newcat);
-			}
-		}		
-		
-        for(category in categories){
+				for(var i = 0; i < selectedCheckboxes.length; i++)
+				{
+					var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
+					var file = chromeRadio.storage.getItem(chromeRadio.storage.categoryPrefix + url);
+					//alert("URL: "+url+", FILE:"+file +"NEWCAT: "+newcat);
+					//chromeRadio.storage.deleteme(url);
+					chromeRadio.storage.saveUrl(url,url,newcat);
+				}
+			}		
 
-        }
-        
+		  }
+		  
+		  
 		
-		// HERE SOME MOVE-CODE
-		
-
-	  }
-  
   		// refresh page
 		window.location.reload();
 		
@@ -256,6 +317,7 @@ chromeRadio.storage = {
   /** 
    * GET ITEMS FROM LIBRARY AND DISPLAY THEM
    */
+   /*
   getRadioItems: function(){
     var i = -1;
     var key;
@@ -288,7 +350,7 @@ chromeRadio.storage = {
     }
     var my_library = document.getElementById(element);
     my_library.innerHTML = output_string;
-  },
+  },*/
   genTable: function(storage_key, flipcolor, withCategories, tunes_categories){
       var output_string = "<tr>" +
       '<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+storage_key +'"/></td>' +
@@ -315,7 +377,8 @@ chromeRadio.storage = {
   
   deleteme: function(url){
     window.localStorage.removeItem(chromeRadio.storage.urlPrefix + url);
-    chromeRadio.storage.getRadioItems();
+	window.localStorage.removeItem(chromeRadio.storage.categoryPrefix + url);
+    //chromeRadio.storage.getRadioItems();
   },
   
   importLibrary: function(){
@@ -364,7 +427,7 @@ chromeRadio.storage = {
 
 // instantly-play file listener
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-  console.log(request);
+  //console.log(request);
   sendResponse({}); //immediately
   //alert(links);
   if (request.playme) {

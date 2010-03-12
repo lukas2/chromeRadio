@@ -43,6 +43,8 @@ function updateList(){
     console.log(bgLinks);
     var currentPageLinks = bgLinks.length;
   
+    insert = "";
+  
   for (i = 0; i < bgLinks.length; i++) {
     // check if that url is already in library and decide whether to show add-button
     
@@ -65,7 +67,7 @@ function updateList(){
     }
   }
   
-  $('#links_found').append(insert);
+  document.getElementById("links_found").innerHTML = insert;
 	
 }
 
