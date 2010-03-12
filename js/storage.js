@@ -75,7 +75,7 @@ chromeRadio.storage = {
    *          category the url's user-assigned category
    *  returns none
   */
-  saveFile: function(url,name,category)
+  saveUrl: function(url,name,category)
   {
     chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + url, name);
     chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + url, category); 
@@ -93,7 +93,7 @@ chromeRadio.storage = {
     var this_name = document.form_new_mp3.mp3_name.value;
     var this_url = document.form_new_mp3.mp3_url.value;
     var this_category = document.form_new_mp3.mp3_category.value;
-    chromeRadio.storage.saveFile(this_url, this_name, this_category);
+    chromeRadio.storage.saveUrl(this_url, this_name, this_category);
   },
   
   setItem: function(key, value){
@@ -192,7 +192,7 @@ chromeRadio.storage = {
 				var file = chromeRadio.storage.getItem(chromeRadio.storage.categoryPrefix + url);
 				alert("URL: "+url+", FILE:"+file);
 				chromeRadio.storage.deleteme(url);
-				chromeRadio.storage.saveFile(url,url,newcat);
+				chromeRadio.storage.saveUrl(url,url,newcat);
 			}
 		}		
 		
