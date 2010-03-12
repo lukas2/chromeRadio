@@ -43,17 +43,15 @@ chromeRadio.storage = {
 	while (++i < len) 
 	{
 	    key = localStorage.key(i);
-	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) 
-		{
-			storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
-			var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
-			//urls[storage_key] = category_name;
-			if(storage_key != category_name)
+			storage_key = key.substring(chromeRadio.storage.urlPrefix.length);
+			var category_name = localStorage.getItem(chromeRadio.storage.urlPrefix + storage_key);
+			
+			//yes this is some evil horrible hacking, but were totally running out of time..
+			
+			if(storage_key != category_name && storage_key.indexOf("http") == 0)
 			{
 				urls.push(storage_key);
 			}
-		}
-
 	}
 	return urls;
   },
@@ -119,7 +117,7 @@ chromeRadio.storage = {
   createNewCategory: function(){
     var category_field = document.getElementById("new_cat_textfield");
     chromeRadio.storage.saveCategory(category_field.value);
-    chromeRadio.storage.getRadioItems();
+    //chromeRadio.storage.getRadioItems();
     // refresh page
     window.location.reload();
   },

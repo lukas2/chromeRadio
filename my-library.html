@@ -156,51 +156,34 @@
 		var newTabDescriptor = document.createElement("ul");
 		tabs.appendChild(newTabDescriptor);
 		
-		// first show all files
+		// first show the tab with all files
 		
 		newTabDescriptor.innerHTML += '<li><a href="#tabs-0" title="tabs-0">All Files</a></li>';
 		
 		var newTab = document.createElement("div");
 		newTab.id = "tabs-0";
+		
+		// contents ...
 		newTab.innerHTML += '<table  id="table_cat_0" style="width:100%;"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+chromeRadio.storage.getLinksInCategory(null)+'</tbody></table>';
 		
 		tabs.appendChild(newTab);
 		
+		// now we go by category:
 		for (category in categories) 
 		{
 			// tab header:
 			newTabDescriptor.innerHTML += '<li><a href="#tabs-'+tabno+'" title="tabs-'+tabno+'">'+category+'</a></li>';
 			
 			// tab contents:
-			
 			var newTab = document.createElement("div");
 			newTab.id = "tabs-"+tabno;
 
 			newTab.innerHTML += '<table  id="table_cat_' + tabno + '" style="width:100%;"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_' + tabno + '">'+chromeRadio.storage.getLinksInCategory(category)+'</tbody></table>';
 			
-			
-			
 			tabs.appendChild(newTab);
-			
-			
 			tabno++;
 		}
-		
-		if (category == "") continue;
-		
-		
-		
-		//$("#tabs").tabs('add',category,category);
-		/*$("#tabs").append('<h3><a href="tabs-'+tabno+'">' + category + '</a></h3>');
-		$('#tabs').append('<div id="tabs-' + tabno + '"></div>');*/
-		
-		/*
-		$('#tabs-' + tabno).append('<table id="table' + category + '" class="ui-widget ui-widget-content"> <thead class="ui-widget-header "> <tr> <th id="allNone"> <a onClick="selectAll();" href="#">All</a> <a onClick="selectNone();" href="#">None</a> </th> <th> File </th></thead><tbody id="' + category + 'Body">>'+chromeRadio.storage.getLinksInCategory(category)+'</tbody</table>');
-		
-		  //alert(document.getElementById('tabs-'+tabno).innerHTML);
-		  */
-          /*$('#table' + category).width('100%');
-          $('#' + category).css('padding', '0');*/
+
 	  });
 	  
 	  $(function(){
