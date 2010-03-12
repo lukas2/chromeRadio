@@ -35,6 +35,17 @@ chromeRadio.storage = {
     chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + new_category, new_category);
   },
   
+  
+  saveFile: function(url,name,category)
+  {
+    var mp3_name = name;
+    var mp3_url = url;
+    var mp3_category = category;
+    
+    chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + mp3_url, mp3_name);
+    chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + mp3_category, mp3_url); 
+  },
+  
   saveMp3Url: function(){
     var mp3_name = document.form_new_mp3.mp3_name.value;
     var mp3_url = document.form_new_mp3.mp3_url.value;
@@ -109,8 +120,9 @@ chromeRadio.storage = {
   {
 	  var selectfield = document.getElementById("action_select");
 	  var selindex  = selectfield.selectedIndex
-    var selvalue = selectfield.options[selindex].value
+      var selvalue = selectfield.options[selindex].value
 
+	  var selectedCheckboxes = chromeRadio.storage.getSelectedCheckboxes();
 	  
 	  if(selvalue == "act_export")
 	  {
@@ -126,7 +138,11 @@ chromeRadio.storage = {
 	  }
 	  else if(selvalue == "act_delete")
 	  {
-      var items = chromeRadio.storage.getSelectedMp3s();
+		 for(var i = 0; i < selectedCheckboxes.length; i++)
+		 {
+			var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
+			chromeRadio.storage.deleteme(url);
+		 }
 	  }
 	  else 
 	  {
@@ -147,6 +163,29 @@ chromeRadio.storage = {
 		
 	  }
   
+  },
+  
+  /**
+   * returns array of dom-input nodes that are the selected checkboxes
+   */
+  getSelectedCheckboxes: function()
+  {
+	var inputs = document.getElementsByTagName("input");
+	var checkboxes = new Array();
+	
+	for(var i = 0; i < inputs.length; i++)
+	{
+		if (inputs[i].type == "checkbox")
+		{
+			/* only add checked items */
+			if(inputs[i].checked == true)
+			{
+				checkboxes.push(inputs[i]);	
+			}		
+		}
+	}
+	
+	return checkboxes;
   },
   
 
