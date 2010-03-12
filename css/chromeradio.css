@@ -24,24 +24,6 @@ table tr td {
 	vertical-align: middle;
 }
 
-.library_table
-{
-	width: 100%;
-	margin: 0;
-	border-collapse: 0;
-	border-spacing: 0;
-	border: 1px solid #777;
-	border-bottom: none;
-}
-
-.library_table tr td
-{
-	padding-left: 5px;
-	padding-right: 5px;
-	border-bottom: 1px solid #777;
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
 
 .lineheader
 {
@@ -71,24 +53,6 @@ table tr td {
 	background: #EEE;
 }
 
-.controls_table
-{	
-	background: #EEE;
-	margin-top: 15px;
-	border: 1px solid #000;
-	padding: 3px;
-}
-
-#searchdiv
-{
-	float: right;
-	background: #EEE;
-	margin-bottom: 10px;
-	border: 1px solid #000;
-	padding: 3px;
-	padding-left: 8px;
-	font-weight: bold;
-}	
 
 #tabs-5 a:link, #tabs-5 a:visited
 {

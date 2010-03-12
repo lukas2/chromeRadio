@@ -11,6 +11,56 @@
     </script>
     <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8rc3.custom.css" type="text/css" media="screen" title="no title" charset="utf-8" />
     <style type="text/css" media="screen">
+	
+	  body{
+		font-size: 13px;
+	  }
+	  
+	  h1
+	  {
+		font-size:20px;
+	  }
+	  
+	  .controls_table
+	{	
+		background: #EEE;
+		margin-top: 15px;
+		border: 1px solid #CCC;
+		padding: 3px;
+	}
+
+	#searchdiv
+	{
+		float: right;
+		background: #EEE;
+		margin-bottom: 10px;
+		border: 1px solid #CCC;
+		padding: 3px;
+		padding-left: 8px;
+		font-weight: bold;
+	}	
+	
+	
+	#accordion table
+	{
+		width: 100%;
+		margin: 0;
+		border-collapse: 0;
+		border-spacing: 0;
+		border: 1px solid #777;
+		border-bottom: none;
+	}
+
+	#accordion table tr td
+	{
+		padding-left: 5px;
+		padding-right: 5px;
+		border-bottom: 1px solid #777;
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+
+	
       #allNone {
           width: 20px;
       }
@@ -83,7 +133,7 @@
               Search: <input type="text" id="search_text_field" onkeyup="chromeRadio.storage.search.search();"><!--<input type="button" value="Go" onClick="chromeRadio.storage.search.search();"/>-->
             </div>
             <div id="headerdiv">
-              <h1>These are all the music files in your library:</h1>
+              <h1>chromeRadio Library</h1>
             </div>
             <div id="accordion">
               <h3><a href="#">All</a></h3>
@@ -206,15 +256,33 @@
             </div>
           </div>
           <div id="tabs-5">
-            <h2>ChromeRadio Version 1.0</h2>
+            <h2>chromeRadio Version 1.0</h2>
             <p>
-              ChromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
+              chromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
               event in Munich, Germany.
             </p>
-            <h2>How To Use ChromeRadio</h2>
+            <h2>How To Use chromeRadio</h2>
             <p>
-              ..
+               chromeRadio is an extension that allows you to discover audio-files on websites you visit in seconds and playback them instantly using the Chrome Browser's built in HTML5 capabilities. It also allows you to store them in a music library and organize them using Categories.
             </p>
+			<p>
+				Let us show you how it works. For this brief tutorial we assume the extension has been correctly activated and you see the icon in your browser-bar.
+			</p>
+			<p>
+				<b>Step 1:</b> Go to a page that has direct links to either .mp3 or .ogg files. <a href="http://www.youlooknicetoday.com/">youlooknicetoday.com</a> is the website of a (great) podcast and we will use it in this example. As soon as the page finishes to load you should see a tiny badge appear on top of the extension-icon notifiying you of the number of files that have been found by looking at the page's HTML. It should look like this:
+			</p>
+			<p>
+				<img src="images/pic1_discovery.png" alt="discovery 1" style="border: 1px solid #000;">
+			</p>
+			<p>
+				Please not that this might not work 100% of the time, because of certain limitiations withing the extension API. If it doesn't it often helps to simply click on another tab and then click again on the tab that contains the music files.
+			</p>
+			<p>
+				<b>Step 2:</b> When you click the icon you will be presented a popup that lists all the music files that have been found. In our example it's ten files. You will initially see the anchor text of the links, but since that is often not very helpful, a click on "Toggle View" will show you the actual filenames. You can now either playback those files using the "Play Instantly"-Link, or you can add them to your library so you can listen to them later. This is how it should look like on youlooknicetoday.com:
+			</p>
+			<p>
+				<img src="images/pic2_discovery.png" alt="discovery 2" style="border: 1px solid #000;">
+			</p>
             <h2>The Team</h2>
             <p>
               Three people worked on this initial version for ChromeRadio:
