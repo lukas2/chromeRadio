@@ -49,8 +49,12 @@
           color: #000;
       }
     </style>
-    <script type="text/javascript" src="js/popup.js">
+    <script type="text/javascript" src="js/jquery-1.4.2.min.js">
     </script>
+    <script type="text/javascript" src="js/jquery-ui-1.8rc3.custom.min.js">
+    </script>
+    <script type="text/javascript" src="js/popup.js">
+</script>
   </head>
   <body onLoad="updateList()">
     <div style="float:right;">
@@ -60,6 +64,9 @@
     <h1 style="margin-top:0;">MP3-Links found:</h1>
     <table id="links_found">
     </table>
+		<script type="text/javascript" language="javascript" charset="utf-8">
+			$(function(){ $("a", "#links_found").button(); }); 
+		</script>
   </body>
 </html>
 
