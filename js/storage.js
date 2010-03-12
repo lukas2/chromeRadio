@@ -4,10 +4,27 @@ if (!chromeRadio.storage)
   chromeRadio.storage = {};
 
 chromeRadio.storage = {
-  storagePrefix: "mp3_url:",
-  storageName: "mp3_name:",
+  urlPrefix: "chromeRadioURL:",
+  namePrefix: "chromeRadioName:",
   categoryPrefix: "chromeRadioCat:",
-  
+
+  // -------------------------------------
+  // get all URLs that belong to a particular category
+  getAllUrlsInCategory: function(category){
+	var urls = {};
+	var i = -1;
+	var len = localStorage.length;
+	while (++i < len) {
+	    key = localStorage.key(i);
+	    if (key.substring(0, chromeRadio.storage.categoryPrefix.length) == chromeRadio.storage.categoryPrefix) {
+		storage_key = key.substring(chromeRadio.storage.categoryPrefix.length);
+		var category_name = localStorage.getItem(chromeRadio.storage.categoryPrefix + storage_key);
+		urls[storage_key] = category_name;
+	    }
+	}
+	return urls;
+  },
+
   getAllCategories: function(){
     var categories = {};
     var i = -1;
@@ -27,8 +44,8 @@ chromeRadio.storage = {
     var category_field = document.getElementById("new_cat_textfield");
     chromeRadio.storage.saveCategory(category_field.value);
     chromeRadio.storage.getRadioItems();
-	// refresh page
-	window.location.reload();
+    // refresh page
+    window.location.reload();
   },
   
   saveCategory: function(new_category){
@@ -38,28 +55,23 @@ chromeRadio.storage = {
   
   saveFile: function(url,name,category)
   {
-    var mp3_name = name;
-    var mp3_url = url;
-    var mp3_category = category;
-    
-    chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + mp3_url, mp3_name);
-    chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + mp3_category, mp3_url); 
-  },
-  
-  saveMp3Url: function(){
-    var mp3_name = document.form_new_mp3.mp3_name.value;
-    var mp3_url = document.form_new_mp3.mp3_url.value;
-    var mp3_category = document.form_new_mp3.mp3_category.value;
-    
-    chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + mp3_url, mp3_name);
-    chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + mp3_category, mp3_url);
+    chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + url, name);
+    chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + url, category); 
+
     // Update status to let user know options were saved.
     var status = document.getElementById("status");
-    status.innerHTML = "MP3 Saved into your Library.";
+    status.innerHTML = "URL saved into your Library.";
     setTimeout(function(){
       status.innerHTML = "";
     }, 750);
     getRadioItems();
+  },
+  
+  saveMp3Url: function(){
+    var this_name = document.form_new_mp3.mp3_name.value;
+    var this_url = document.form_new_mp3.mp3_url.value;
+    var this_category = document.form_new_mp3.mp3_category.value;
+    chromeRadio.storage.saveFile(this_url, this_name, this_category);
   },
   
   setItem: function(key, value){
@@ -88,8 +100,8 @@ chromeRadio.storage = {
    */
   initializeEverything: function()
   {
-	chromeRadio.storage.getRadioItems();
-    chromeRadio.storage.getControls();
+      chromeRadio.storage.getRadioItems();
+      chromeRadio.storage.getControls();
   },
   
   /**
@@ -97,20 +109,20 @@ chromeRadio.storage = {
    */
   getControls: function()
   {
-	 var target = document.getElementById("action_select");
-	
-	 categories = chromeRadio.storage.getAllCategories();
-	 var insert="";
-	 insert+="<option value=\"act_delete\">Delete Selected</option>";
-	 insert+="<option value=\"act_nop\">----</option>";
-	 for (category in categories) {
-		insert+="<option value=\"cat_"+category+"\">Move to Category \""+category+"\"</option>";
-	 }
-	 insert+="<option value=\"act_nop\">----</option>";
-	 insert+="<option value=\"act_export\">Export Library</option>";
-	 insert+="<option value=\"act_import\">Import Library</option>";
-	 
-	 target.innerHTML = insert;
+      var target = document.getElementById("action_select");
+      
+      categories = chromeRadio.storage.getAllCategories();
+      var insert="";
+      insert+="<option value=\"act_delete\">Delete Selected</option>";
+      insert+="<option value=\"act_nop\">----</option>";
+      for (category in categories) {
+	  insert+="<option value=\"cat_"+category+"\">Move to Category \""+category+"\"</option>";
+      }
+      insert+="<option value=\"act_nop\">----</option>";
+      insert+="<option value=\"act_export\">Export Library</option>";
+      insert+="<option value=\"act_import\">Import Library</option>";
+      
+      target.innerHTML = insert;
   },
   
   /** 
@@ -118,35 +130,35 @@ chromeRadio.storage = {
    */
   performWithSelected: function()
   {
-	  var selectfield = document.getElementById("action_select");
-	  var selindex  = selectfield.selectedIndex
+      var selectfield = document.getElementById("action_select");
+      var selindex  = selectfield.selectedIndex
       var selvalue = selectfield.options[selindex].value
-
-	  var selectedCheckboxes = chromeRadio.storage.getSelectedCheckboxes();
-	  
-	  if(selvalue == "act_export")
+      
+      var selectedCheckboxes = chromeRadio.storage.getSelectedCheckboxes();
+      
+      if(selvalue == "act_export")
 	  {
-		chromeRadio.storage.exportLibrary(); return false;
+	      chromeRadio.storage.exportLibrary(); return false;
 	  }
-	  else if(selvalue == "act_import")
+      else if(selvalue == "act_import")
 	  {
-		chromeRadio.storage.showMe('div_import_textarea'); return false;
+	      chromeRadio.storage.showMe('div_import_textarea'); return false;
 	  }
-	  else if(selvalue == "act_nop")
+      else if(selvalue == "act_nop")
 	  {
-		//do nothing at all
+	      //do nothing at all
 	  }
 	  else if(selvalue == "act_delete")
-	  {
-		 for(var i = 0; i < selectedCheckboxes.length; i++)
-		 {
-			var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
-			chromeRadio.storage.deleteme(url);
-		 }
-	  }
+	      {
+		  for(var i = 0; i < selectedCheckboxes.length; i++)
+		      {
+			  var url = selectedCheckboxes[i].name.substring(6, selectedCheckboxes[i].name.length);
+			  chromeRadio.storage.deleteme(url);
+		      }
+	      }
 	  else 
-	  {
-        //var categories = chromeRadio.storage.getAllCategories();
+	      {
+		  //var categories = chromeRadio.storage.getAllCategories();
 		// move to category
 	    if(selvalue.indexOf("cat_") == 0){
 		    //move to selvalue to secified category
@@ -205,8 +217,8 @@ chromeRadio.storage = {
     var selectedMp3Items;
     while (i++ < localStorage.length) {
       key = localStorage.key(i);
-      if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
-        storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
+      if (key.substring(0, chromeRadio.storage.urlPrefix.length) == chromeRadio.storage.urlPrefix) {
+        storage_key = key.substring(chromeRadio.storage.urlPrefix.length);
         selectedMp3Items += document.getElementsByName('check_'+storage_key)[0];
       }
     }
@@ -237,8 +249,8 @@ chromeRadio.storage = {
     
     while (++i < len) {
       key = localStorage.key(i);
-      if (key.substring(0, chromeRadio.storage.storagePrefix.length) == chromeRadio.storage.storagePrefix) {
-        storage_key = key.substring(chromeRadio.storage.storagePrefix.length);
+      if (key.substring(0, chromeRadio.storage.urlPrefix.length) == chromeRadio.storage.urlPrefix) {
+        storage_key = key.substring(chromeRadio.storage.urlPrefix.length);
         tunes[storage_key] = localStorage.getItem(key);
         element = "bodyAllMp3s";
         if (flipcolor) {
@@ -280,7 +292,7 @@ chromeRadio.storage = {
   },
   
   deleteme: function(url){
-    window.localStorage.removeItem(chromeRadio.storage.storagePrefix + url);
+    window.localStorage.removeItem(chromeRadio.storage.urlPrefix + url);
     chromeRadio.storage.getRadioItems();
   },
   
@@ -290,7 +302,7 @@ chromeRadio.storage = {
     var tunes = JSON.parse(tunesJSONString);
     for (var i in tunes) {
       var this_item = tunes[i];
-      chromeRadio.storage.setItem(chromeRadio.storage.storagePrefix + this_item[chromeRadio.storage.storagePrefix], this_item[chromeRadio.storage.storageName]);
+      chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + this_item[chromeRadio.storage.urlPrefix], this_item[chromeRadio.storage.namePrefix]);
     }
     chromeRadio.storage.getRadioItems();
   },
@@ -303,11 +315,11 @@ chromeRadio.storage = {
     var output_string = "";
     while (++i < len) {
       key = localStorage.key(i);
-      if (key.substring(0, 8) == chromeRadio.storage.storagePrefix) {
+      if (key.substring(0, 8) == chromeRadio.storage.urlPrefix) {
         var this_item = {};
         storage_key = key.substring(8);
-        this_item[chromeRadio.storage.storagePrefix] = storage_key;
-        this_item[chromeRadio.storage.storageName] = localStorage.getItem(key);
+        this_item[chromeRadio.storage.urlPrefix] = storage_key;
+        this_item[chromeRadio.storage.namePrefix] = localStorage.getItem(key);
         tunes[i] = this_item;
       }
     }
