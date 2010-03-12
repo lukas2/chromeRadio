@@ -80,6 +80,7 @@
 		padding:5px;
 		margin-top:5px;
 		height: 32px;
+		margin-bottom: 5px;
 	  }
 	  #my-radio-player-div
 	  {
@@ -113,6 +114,8 @@
 		$("#about-dialog").dialog({ width: "90%" });
 		$("#add-file-dialog").dialog({autoOpen:false});
 		$("#add-file-dialog").dialog({ width: "760px" });
+		$("#showaboutdialoglink").button();
+		$("#showaddfiledialoglink").button();
 	  });	
 
 	  
@@ -246,8 +249,8 @@
             </div>
 		  </div>
 		  
-		  <a href="#" onClick="showAboutDialog();">About</a>
-		  <a href="#" onClick="showAddFileDialog();">Add File</a>
+		  <a id="showaboutdialoglink" href="#" onClick="showAboutDialog();">About</a>
+		  <a id="showaddfiledialoglink" href="#" onClick="showAddFileDialog();">Add File</a>
 		  
 		  <div id="add-file-dialog" title="Add file">
  <form id="form_new_mp3" name="form_new_mp3">
