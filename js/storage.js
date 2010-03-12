@@ -8,8 +8,10 @@ chromeRadio.storage = {
   namePrefix: "chromeRadioName:",
   categoryPrefix: "chromeRadioCat:",
 
-  // -------------------------------------
-  // get all URLs that belong to a particular category
+  /** get all URLs that belong to a particular category
+   *  params  category name of the category
+   *  returns unordered assoc array of urls
+  */
   getAllUrlsInCategory: function(category){
 	var urls = {};
 	var i = -1;
@@ -25,6 +27,10 @@ chromeRadio.storage = {
 	return urls;
   },
 
+  /** get all stored categories
+   *  params  none
+   *  returns unordered assoc array of categories
+  */
   getAllCategories: function(){
     var categories = {};
     var i = -1;
@@ -40,6 +46,10 @@ chromeRadio.storage = {
     return categories;
   },
   
+  /** create a new category from my-library.html
+   *  params  none
+   *  returns none
+  */
   createNewCategory: function(){
     var category_field = document.getElementById("new_cat_textfield");
     chromeRadio.storage.saveCategory(category_field.value);
@@ -48,11 +58,23 @@ chromeRadio.storage = {
     window.location.reload();
   },
   
+  /** saves a category
+   *  params  new_category category name
+   *  returns none
+  */
   saveCategory: function(new_category){
     chromeRadio.storage.setItem(chromeRadio.storage.categoryPrefix + new_category, new_category);
   },
   
-  
+  /** save a file into local storage,
+   *  also replaces already existing information
+   *  use this to change the name and/or the category of an item
+   *  url serves as the internal storage key
+   *  params  url      url of the item
+   *          name     user-readable name
+   *          category the url's user-assigned category
+   *  returns none
+  */
   saveFile: function(url,name,category)
   {
     chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + url, name);
