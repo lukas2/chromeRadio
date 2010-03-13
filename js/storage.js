@@ -437,13 +437,13 @@ chromeRadio.storage = {
      */
     importLibrary: function() {
 	var importTextarea = document.getElementById('import_textarea');
-	var tunesJSONString = importTextarea.value;
-	var tunes = JSON.parse(tunesJSONString);
-	for (var i in tunes) {
-	    var this_item = tunes[i];
-	    chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + this_item[chromeRadio.storage.urlPrefix], this_item[chromeRadio.storage.namePrefix]);
+	var itemsJSONString = importTextarea.value;
+	var items = JSON.parse(itemsJSONString);
+	for (var i in items) {
+	    var this_item = items[i];
+	    chromeRadio.storage.setItem(i, items[i]);
 	}
-	chromeRadio.storage.getRadioItems();
+	window.location.reload();
     },
   
     /**
@@ -453,21 +453,15 @@ chromeRadio.storage = {
 	var i = -1;
 	var key;
 	var len = localStorage.length;
-	var tunes = {};
+	var values = {};
 	var output_string = "";
 	while (++i < len) {
 	    key = localStorage.key(i);
-	    if (key.substring(0, 8) == chromeRadio.storage.urlPrefix) {
-		var this_item = {};
-		storage_key = key.substring(8);
-		this_item[chromeRadio.storage.urlPrefix] = storage_key;
-		this_item[chromeRadio.storage.namePrefix] = localStorage.getItem(key);
-		tunes[i] = this_item;
-	    }
+	    values[key] = localStorage.getItem(key);
 	}
-	var tunesJSONString = JSON.stringify(tunes);
+	var itemsJSONString = JSON.stringify(values);
 	var exportTextarea = document.getElementById('export_textarea');
-	exportTextarea.value = tunesJSONString;
+	exportTextarea.value = itemsJSONString;
 	chromeRadio.storage.showMe("div_export_textarea");
     },
   

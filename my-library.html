@@ -1,4 +1,3 @@
-
   <head>
     <title>My chromeRadio Library</title>
     <script type="text/javascript" src="js/storage.js">
@@ -243,7 +242,17 @@
             </div>
 		  </div>
 		  
+	    <div id="div_export_textarea" style="display: none">
+	    <textarea id="export_textarea"></textarea>
+	    </div>
 
+	    <div id="div_import_textarea" style="display: none">
+	    <textarea id="import_textarea"></textarea>
+	    <input type="submit" value="Import" 
+		   onclick="chromeRadio.storage.importLibrary(); 
+			    chromeRadio.storage.hideMe('div_import_textare');
+			    return false;">
+	    </div>
 		  
 		  <div id="manage-categories-dialog" title="Manage Categories">
 	<table id="controls_table">
