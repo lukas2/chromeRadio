@@ -45,12 +45,18 @@
           width: 20px;
       }
       
-      #line1 {
-          background: #CCC;
+      .line1 {
+          border: 1px solid #aed0ea; background: #deedf7; color: #222222; 
       }
+	  
+	  .line1 a, .line2 a
+	  {
+		text-decoration:none;
+	  }
       
-      #line2 {
-          background: #EEE;
+      .line2 {
+         color: #362b36; 
+		 border: 1px solid #aed0ea;
       }
 	  
 	  #controls_table_wrapper
@@ -93,6 +99,8 @@
 		padding-bottom: 3px;
 		padding-left:10px; 
 	  }
+	  
+	  
     </style>
     <script type="text/javascript">
       
@@ -148,7 +156,7 @@
 		
 		var contents = chromeRadio.storage.getLinksInCategory(null);
 		if(contents.length > 0)	{
-			newTab.innerHTML += '<div class="search_div ui-corner-all">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
+			newTab.innerHTML += '<div class="search_div ui-corner-all">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:15px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
 		} else {
 			newTab.innerHTML += 'There are no files in this category.';
 		}
@@ -169,7 +177,7 @@
 			var contents = chromeRadio.storage.getLinksInCategory(category);
 			if(contents.length > 0)
 			{
-				newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_'+tabno+'" onkeyup="chromeRadio.search.search('+tabno+',this.value);"</div><table  id="table_cat_' + tabno + '" style="width:100%;">  <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll('+tabno+');" href="#">All</a> <a onClick="selectNone('+tabno+');" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_' + tabno + '">'+contents+'</tbody></table>';			
+				newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_'+tabno+'" onkeyup="chromeRadio.search.search('+tabno+',this.value);"</div><table  id="table_cat_' + tabno + '" style="width:100%;">  <thead style="font-weight:bold; font-size:15px;"> <tr> <th id="allNone"> <a onClick="selectAll('+tabno+');" href="#">All</a> <a onClick="selectNone('+tabno+');" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_' + tabno + '">'+contents+'</tbody></table>';			
 			}
 			else
 			{
