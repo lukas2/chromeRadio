@@ -122,6 +122,7 @@
 		$("#showaboutdialoglink").button();
 		$("#showaddfiledialoglink").button();
 		$('#managecategoriesdialoglink').button();
+		$('#performwithselectedlink').button();
 	  });	
 	  
 	  // TABS STATT ACCS
@@ -204,7 +205,7 @@
 	<div id="controls_table_wrapper">
 	<table id="controls_table">
               <tr>
-                <td style="font-weight: bold;">
+                <td style="font-size:18px; font-family:sans-serif;">
                   With Selected: 
                 </td>
                 <td>
@@ -212,8 +213,13 @@
                   </select>
                 </td>
                 <td>
-                  <input type="button" value="OK" onClick="chromeRadio.storage.performWithSelected();">
+				  <a id="performwithselectedlink" href="#" onClick="chromeRadio.storage.performWithSelected();">OK</a>
                 </td>
+				<td>
+					<a id="showaboutdialoglink" href="#" onClick="showAboutDialog();">About</a>
+					<a id="showaddfiledialoglink" href="#" onClick="showAddFileDialog();">Add File</a>
+					<a id="managecategoriesdialoglink" href="#" onClick="showManageCategoriesDialog();">Manage Categories</a>
+				</td>
               </tr>
     </table>	  
 	</div>
@@ -229,9 +235,7 @@
             </div>
 		  </div>
 		  
-		  <a id="showaboutdialoglink" href="#" onClick="showAboutDialog();">About</a>
-		  <a id="showaddfiledialoglink" href="#" onClick="showAddFileDialog();">Add File</a>
-		  <a id="managecategoriesdialoglink" href="#" onClick="showManageCategoriesDialog();">Manage Categories</a>
+
 		  
 		  <div id="manage-categories-dialog" title="Manage Categories">
 	<table id="controls_table">
@@ -282,6 +286,7 @@
 		  </div>
 		  
 		  <div id="about-dialog"  title="About chromeRadio">
+			<img src="/images/chromeRadioTitle.png" alt="chromeRadio Title" style="float:right;">
             <h2>chromeRadio Version 1.0</h2>
             <p>
               chromeRadio is an Extension for the Google Chrome Browser developed for the <a href="https://sites.google.com/site/gchromeevent/home/gtug-battle">GTUG Battle</a>
