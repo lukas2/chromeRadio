@@ -311,8 +311,6 @@ chromeRadio.storage = {
 	    insert2+="<option value=\"delcat_"+category+"\">Delete Category \""+category+"\"</option>";
 	}
 	insert+="<option value=\"act_nop\">----</option>";
-	insert+="<option value=\"act_export\">Export Library</option>";
-	insert+="<option value=\"act_import\">Import Library</option>";
       
 	target.innerHTML = insert;
 	target2.innerHTML = insert2;
@@ -327,11 +325,7 @@ chromeRadio.storage = {
 	var selvalue = selectfield.options[selindex].value
       
 	var selectedCheckboxes = chromeRadio.storage.getSelectedCheckboxes();
-	if(selvalue == "act_export") {
-	    chromeRadio.storage.exportLibrary(); return false;
-	} else if(selvalue == "act_import") {
-	    chromeRadio.storage.showMe('div_import_textarea'); return false;
-	} else if(selvalue == "act_nop") {
+	if(selvalue == "act_nop") {
 	    //do nothing at all
 	} else if(selvalue == "act_delete") {
 	    for(var i = 0; i < selectedCheckboxes.length; i++) {
