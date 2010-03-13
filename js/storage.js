@@ -204,6 +204,8 @@ chromeRadio.storage = {
 	
 	for(var i = 0; i < cats.length; i++)
 	{
+		
+		if(cats[i]['key'].substring(chromeRadio.storage.categoryPrefix.length) == "")continue;	
 		categories.push(cats[i]['key'].substring(chromeRadio.storage.categoryPrefix.length));
 		//console.log(cats[i]['key'].substring(chromeRadio.storage.categoryPrefix.length));
 	}
