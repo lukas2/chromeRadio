@@ -166,8 +166,8 @@ chromeRadio.storage = {
 	for(var i = 0; i < urls.length; i++)
 	{
 		insert+= "<tr>"+
-		'<td id="'+((flipcolor)?'line1':'line2')+'"><input type="checkbox" name="check_'+urls[i] +'"/></td>'+
-		'<td id="'+((flipcolor)?'line1':'line2')+'"><a onclick="chromeRadio.storage.playme(this.id);return false;"'+
+		'<td class="'+((flipcolor)?'ui-widget-header':'ui-widget-content')+'"><input type="checkbox" name="check_'+urls[i] +'"/></td>'+
+		'<td class="'+((flipcolor)?'ui-widget-header':'ui-widget-content')+'"><a onclick="chromeRadio.storage.playme(this.id);return false;"'+
 		'href="#" id="' + urls[i] +'">' + urls[i] +'</a></td>';
 		insert += "</tr>";
 		
