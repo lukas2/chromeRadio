@@ -4,6 +4,10 @@ if (!chromeRadio.search)
 	chromeRadio.search = {};
 }
 
+/**
+ * handler for searchbox. gets triggered everyt time an "onkeyup" event fires.
+ * checks contents of library tables for given search word as a simple substring check
+ * and display only those rows for which the check holds true.*/
 chromeRadio.search = {
     search: function(tabid,text) {
 		var tab = document.getElementById("table_cat_body_"+tabid);

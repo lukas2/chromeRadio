@@ -2,29 +2,37 @@
 <script type="text/javascript" src="js/popup.js"></script>
 <script>
   
+  /* holds array of links received from content-script*/
   links = null;
   
   // *********** LISTENERS **************
   
-  // this listener gets content_script results when user changed active tab
+  /*
+   * this listener gets content_script results when user changed active tab
+   */
   chrome.tabs.onSelectionChanged.addListener(function(tabId, info){
   
     updateLinks(tabId);
     
   });
   
-  // this listener gets content_script results when user created a new tab
+   /*
+    *  this listener gets content_script results when user created a new tab
+	*/
   chrome.tabs.onCreated.addListener(function(tab){
     updateLinks(tab.id);
   });
   
-  // this listener gets content_script results when tab changed somehow
+   /*
+    * this listener gets content_script results when tab is updated
+	*/
   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
     updateLinks(tabId);
   });
-  
-  // LISTENER THAT UPDATES THE BADGE WHEN A LINK COUNT IS BEING SENT FROM CONTENT-SCRIPT.
-  
+ 
+   /* this listener is called by the content-script "match_content_script.js" and updates
+    * the badge and triggers a list refresh.
+    */
   chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
     console.log(request);
     //alert(links);
@@ -50,24 +58,24 @@
       updateList();
       
     }
-    
-    
     sendResponse({});
   });
   
   // *********** LOCAL STORAGE **************
   
-  // simply add new mp3 without a message
-  // this is called in popup.html
+  /** directly store a file into local storage.
+    * href : url
+    * text : anchor text
+	* return : none
+	*/
   function addToLibrary(href, text){
-    //(chromeRadio.urlPrefix+href, text);
-    //setItem(chromeRadio.storage.urlPrefix + href, text);
-    //chromeRadio.storage.setItem(chromeRadio.storage.urlPrefix + href, text);
 	chromeRadio.storage.storeNewFile(href,text);
-    
   }
   
-  // check for popup.html if given mp3 already is in local storage.
+  /* check for popup.html if given mp3 already is in local storage.
+   * href : url
+   * return : true or false
+   */
   function mp3IsInLibrary(href){
     console.log("checking: " + href);
     //if (chromeRadio.storage.getItem(chromeRadio.storage.urlPrefix + href) != null) {
@@ -82,6 +90,9 @@
   
   // ************************
   
+  /**
+   * sends request to update the list.
+   */
   function updateLinks(tabId){
     chrome.tabs.sendRequest(tabId, {
       update: "true"
@@ -89,7 +100,10 @@
   }
   
   
-  // play file instantly from popup.html
+  /* play file instantly from popup.html
+   * href : url of file
+   * return : none
+   */
   function playFile(href){
   
     // first check if the library is already open
@@ -119,6 +133,12 @@
     window.setTimeout("sendDelayedPlayRequest('" + href + "')", 750);
   }
   
+  /**
+   * actual function that sends the request to storage.js to play the file.
+   * it seems neccessary to have a delay for stability and guaranteed functionality.
+   * href : url
+   * return : none
+   */
   function sendDelayedPlayRequest(href){
     chrome.extension.sendRequest({
       playme: href

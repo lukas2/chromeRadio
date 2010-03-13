@@ -9,7 +9,10 @@ chromeRadio.storage = {
     categoryPrefix: "chromeRadioCat:", /* CAT -> 0 */
 
     /**
-     *
+     * set item in chrome local storage.
+	 * key : local storage key
+	 * value : local storage value
+	 * return : none
      */
     setItem: function(key, value) {
 	try {
@@ -21,7 +24,9 @@ chromeRadio.storage = {
     },
   
     /**
-     *
+     * gets item from localstorage
+	 * key : local storage key with prefix
+	 * return : value
      */
     getItem: function(key) {
 	var value;
@@ -35,28 +40,42 @@ chromeRadio.storage = {
     },
     
     /**
-     *
+     * sets a value in local storage. this is a mini-wrapper
+	 * that concatenates prefix and key before storing.
+	 * prefix : storage prefix string (see top of this file)
+	 * key : storage key
+	 * value : storage value
+	 * return : none
      */
     setValue: function(prefix,key,value) {
 	chromeRadio.storage.setItem(prefix+key,value);
     },
   
     /**
-     *
+     * gets the value for a given prefix and key. this is a mini-wrapper
+	 * that concatenates prefix and key before fetching the value.
+	 * prefix : storage prefix string (see top of this file)
+	 * key : storage key
+	 * returns : value
      */
     getValue: function(prefix,key) {
 	return chromeRadio.storage.getItem(prefix+key);
     },
   
     /**
-     *
+     * this is a mini-wrapper that gets a url from storage. it uses the url-
+	 * prefix (see top of this file).
+	 * input : url
+	 * return : category name
      */
     getURL: function(url) {
 	return chromeRadio.storage.getValue(chromeRadio.storage.urlPrefix,url);
     },
   
     /**
-     *
+     * this gets all values for a given prefix from local storage.
+	 * prefix : prefix
+	 * return : array of hashes. each hash contains the key and the value
      */
     getAllValuesForPrefix: function(prefix) {
 	var len = localStorage.length;
@@ -78,13 +97,17 @@ chromeRadio.storage = {
     },
   
     /**
-     *
+     * wrapper for saving a new link into local storage. one key-value pair
+	 * is inserted for the url, and one is inserted for the name (e.g. anchor-text)
+	 * url : url
+	 * text : anchor-text
+	 * return : none
      */
     storeNewFile: function (url,text) {
 	var urlPrefix = chromeRadio.storage.urlPrefix;
 	var namePrefix = chromeRadio.storage.namePrefix;
 	//store url
-	chromeRadio.storage.setValue(urlPrefix, url, '0'); //no category
+	chromeRadio.storage.setValue(urlPrefix, url, '0'); //0 means: assigned to no category
 	chromeRadio.storage.setValue(namePrefix, url, text);
     },
   
@@ -143,6 +166,9 @@ chromeRadio.storage = {
 	return urls;
     },
   
+	/**
+	 * deprecated
+	 */
     getAllUrls: function() {
 	//var urls = {};
 	var urls = new Array();
@@ -361,12 +387,6 @@ chromeRadio.storage = {
 	}
     },
 
-    /**
-     *
-     */
-    moveMp3toCategorie: function() {
-	var i=0;
-    },
 
     /**
      *
@@ -384,7 +404,9 @@ chromeRadio.storage = {
     },
 
     /**
-     *
+     * this sets the url for the html5-player and starts playback.
+	 * url : url of sound-file
+	 * return : none
      */
     playme: function(url) {
 	var my_radio_player = document.getElementById("my-radio-player");
@@ -401,7 +423,9 @@ chromeRadio.storage = {
   
     
     /**
-     *
+     * deletes a file from local storage. deletes both url and category assignment.
+	 * url : url to delete
+	 * return : none
      */
     deleteme: function(url) {
 	window.localStorage.removeItem(chromeRadio.storage.urlPrefix + url);
@@ -476,7 +500,10 @@ chromeRadio.storage = {
     }
 }
 
-// select all checkboxes in library
+/** selects all checkboxes in a library table
+ * whichtable : id of the table (corresponding to a category-tab)
+ * return : none
+ */
 function selectAll(whichtable) {
     var boxes = document.getElementById('table_cat_body_'+whichtable).getElementsByTagName('input');
   
@@ -485,7 +512,10 @@ function selectAll(whichtable) {
     }
 }
 
-// UN-SELECT ALL CHECKBOXES IN LIBRARY
+/** un-selects all checkboxes in a library table
+ * whichtable : id of the table (corresponding to a category-tab)
+ * return : none
+ */
 function selectNone(whichtable) {
     var boxes = document.getElementById('table_cat_body_'+whichtable).getElementsByTagName('input');
     for (var i = 0; i < boxes.length; i++) {
@@ -493,7 +523,8 @@ function selectNone(whichtable) {
     }
 }
 
-// instantly-play file listener
+/** listener that waits for a request from popup.html to instantly play a file.
+ */
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 	sendResponse({}); //immediately
 	if (request.playme) {
