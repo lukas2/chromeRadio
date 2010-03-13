@@ -146,17 +146,12 @@
 		// contents ...
 		
 		var contents = chromeRadio.storage.getLinksInCategory(null);
-		if(contents.length > 0)
-		{
+		if(contents.length > 0)	{
 			newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
-		}
-		else
-		{
-			newTab.innerHTML += 'There are no files in this category.';			
+		} else {
+			newTab.innerHTML += 'There are no files in this category.';
 		}
 
-
-		
 		tabs.appendChild(newTab);
 		
 		// now we go by category:
