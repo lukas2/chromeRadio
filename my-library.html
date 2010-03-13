@@ -148,7 +148,7 @@
 		
 		var contents = chromeRadio.storage.getLinksInCategory(null);
 		if(contents.length > 0)	{
-			newTab.innerHTML += '<div class="search_div">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
+			newTab.innerHTML += '<div class="search_div ui-corner-all">Search: <input type="text" id="search_field_0" onkeyup="chromeRadio.search.search(0,this.value);"</div><table  id="table_cat_0" style="width:100%;"> <thead style="font-weight:bold; font-size:12px;"> <tr> <th id="allNone"> <a onClick="selectAll(0);" href="#">All</a> <a onClick="selectNone(0);" href="#">None</a> </th> <th> File </th></thead><tbody id="table_cat_body_0">'+contents+'</tbody></table>';			
 		} else {
 			newTab.innerHTML += 'There are no files in this category.';
 		}
@@ -202,7 +202,7 @@
     <div id="tabs">
     </div>
 	
-	<div id="controls_table_wrapper">
+	<div id="controls_table_wrapper" class="ui-corner-all">
 	<table id="controls_table">
               <tr>
                 <td style="font-size:18px; font-family:sans-serif;">
@@ -225,7 +225,7 @@
 	</div>
     		  
 		  
-		  <div id="player-wrapper">
+		  <div id="player-wrapper" class="ui-corner-all">
 		    <div id="my-radio-player-div">
               <audio id="my-radio-player" autoplay="true" src="" controls="controls">
               </audio>
