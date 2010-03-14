@@ -424,6 +424,7 @@ chromeRadio.storage = {
     deleteme: function(url) {
 	window.localStorage.removeItem(chromeRadio.storage.urlPrefix + url);
 	window.localStorage.removeItem(chromeRadio.storage.categoryPrefix + url);
+	window.localStorage.removeItem(chromeRadio.storage.namePrefix + url);
     },
   
     /**
