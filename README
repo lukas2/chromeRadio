@@ -1,0 +1,7 @@
+Chrome Radio is an Extension for the Chrome Browser.
+
+Installation-URL: https://chrome.google.com/extensions/detail/hlfidogkmekoaogdljpiafjjddeolhjp
+
+It scans websites for links to .mp3 files and allows caching them in local browser storage for later playback.
+
+We've written this mainly for use with podcasts and music blogs.
